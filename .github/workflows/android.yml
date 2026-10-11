@@ -26,6 +26,15 @@ on:
       - '.github/workflows/android.yml'
       - '.github/scripts/**'
   workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Terbitkan ke GitHub Release (otomatis membuat tag vVERSI)'
+        type: boolean
+        default: false
+      version:
+        description: 'Versi rilis, mis. 1.0.0 (wajib jika publish dicentang)'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -62,7 +71,12 @@ jobs:
       - name: Versi
         id: ver
         run: |
-          python3 .github/scripts/version.py "$GITHUB_REF" "$BASE_VERSION" "$GITHUB_RUN_NUMBER" > "$RUNNER_TEMP/version.env"
+          REF="$GITHUB_REF"
+          if [ "${{ inputs.publish }}" = "true" ]; then
+            [ -n "${{ inputs.version }}" ] || { echo "::error::Isi 'version' (mis. 1.0.0) saat publish dicentang"; exit 1; }
+            REF="refs/tags/v${{ inputs.version }}"
+          fi
+          python3 .github/scripts/version.py "$REF" "$BASE_VERSION" "$GITHUB_RUN_NUMBER" > "$RUNNER_TEMP/version.env"
           cat "$RUNNER_TEMP/version.env" >> "$GITHUB_ENV"
           echo "version=$(sed -n 's/^VERSION_NAME=//p' "$RUNNER_TEMP/version.env")" >> "$GITHUB_OUTPUT"
           cat "$RUNNER_TEMP/version.env"
@@ -130,13 +144,15 @@ jobs:
           if-no-files-found: error
 
       - name: Catatan rilis dari CHANGELOG.md
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.publish == true
         run: python3 .github/scripts/release_notes.py "$VERSION_NAME" > "$RUNNER_TEMP/RELEASE_NOTES.md"
 
       - name: GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.publish == true
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ env.VERSION_NAME }}
+          target_commitish: ${{ github.sha }}
           name: DownloadIn ${{ env.VERSION_NAME }}
           files: |
             out/*.apk
