@@ -1,0 +1,14 @@
+node_modules
+.env
+tmp
+*.log
+__pycache__
+
+# Android
+android/.gradle/
+android/**/build/
+android/local.properties
+android/ffmpeg/out/
+*.p12
+*.jks
+*.keystore
