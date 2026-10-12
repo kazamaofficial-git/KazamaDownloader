@@ -1,0 +1,21 @@
+node_modules
+.env
+tmp
+*.log
+__pycache__
+
+# Android
+android/.gradle/
+android/**/build/
+android/local.properties
+android/ffmpeg/out/
+*.p12
+*.jks
+*.keystore
+<<<<<<< HEAD
+
+# Vercel (binary diunduh saat build)
+bin/
+.vercel
+=======
+>>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8

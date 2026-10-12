@@ -1,0 +1,41 @@
+name: DownloadIn
+options:
+  bundleIdPrefix: com.kazamatech
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  DownloadIn:
+    type: application
+    platform: iOS
+    sources:
+      - DownloadIn
+    info:
+      path: DownloadIn/Info.plist
+      properties:
+        CFBundleDisplayName: DownloadIn
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSPhotoLibraryAddUsageDescription: DownloadIn menyimpan video dan foto hasil unduhan ke Foto.
+        ITSAppUsesNonExemptEncryption: false
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+        CFBundleURLTypes:
+          - CFBundleURLName: com.kazamatech.downloadin
+            CFBundleURLSchemes: [downloadin]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kazamatech.downloadin
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_FILE: DownloadIn/Info.plist
+        GENERATE_INFOPLIST_FILE: NO

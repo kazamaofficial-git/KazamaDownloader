@@ -1,0 +1,96 @@
+name: iOS IPA
+
+# Membangun IPA tanpa tanda tangan (untuk sideload: AltStore / Sideloadly / TrollStore).
+#  - PR / push ke main (ios/**) -> build + artifact
+#  - push tag v*                -> build + IPA dilampirkan ke GitHub Release (dibuat bila belum ada)
+#  - Run workflow (publish)     -> sama dengan tag, versi dari input
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths: ['ios/**', '.github/workflows/ios.yml']
+  pull_request:
+    paths: ['ios/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Lampirkan IPA ke GitHub Release'
+        type: boolean
+        default: false
+      version:
+        description: 'Versi rilis, mis. 1.1.0 (wajib jika publish dicentang)'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-14
+    env:
+      BASE_VERSION: '1.1.0'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tentukan versi
+        id: ver
+        run: |
+          if [ "${{ inputs.publish }}" = "true" ]; then
+            [ -n "${{ inputs.version }}" ] || { echo "::error::Isi 'version' saat publish dicentang"; exit 1; }
+            V="${{ inputs.version }}"; PUBLISH=true
+          elif [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            V="${GITHUB_REF_NAME#v}"; PUBLISH=true
+          else
+            V="$BASE_VERSION"; PUBLISH=false
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
+
+      - name: Pasang XcodeGen
+        run: brew install xcodegen
+
+      - name: Buat proyek Xcode
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Build (tanpa tanda tangan)
+        working-directory: ios
+        run: |
+          xcodebuild -project DownloadIn.xcodeproj -scheme DownloadIn \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            MARKETING_VERSION="${{ steps.ver.outputs.version }}" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Kemas IPA
+        working-directory: ios
+        run: |
+          APP="build/Build/Products/Release-iphoneos/DownloadIn.app"
+          test -d "$APP"
+          rm -rf Payload && mkdir Payload && cp -R "$APP" Payload/
+          zip -qry "DownloadIn-${{ steps.ver.outputs.version }}.ipa" Payload
+          ls -lh *.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DownloadIn-ios-ipa
+          path: ios/*.ipa
+
+      - name: Lampirkan ke GitHub Release
+        if: steps.ver.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.ver.outputs.version }}
+        run: |
+          python3 .github/scripts/release_notes.py "${{ steps.ver.outputs.version }}" > "$RUNNER_TEMP/notes.md"
+          # workflow Android bisa membuat Release yang sama pada waktu bersamaan: buat bila belum ada, lalu unggah dengan retry
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "DownloadIn ${{ steps.ver.outputs.version }}" \
+            --notes-file "$RUNNER_TEMP/notes.md" --target "$GITHUB_SHA" || true
+          for i in 1 2 3 4 5; do
+            gh release upload "$TAG" ios/DownloadIn-*.ipa --clobber && exit 0
+            echo "belum siap, coba lagi ($i)"; sleep 10
+          done
+          exit 1
