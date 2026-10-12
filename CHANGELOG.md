@@ -9,7 +9,6 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan
 
 ## [Belum dirilis]
 
-<<<<<<< HEAD
 ## [1.1.0] - 2026-10-11
 
 ### Ditambahkan
@@ -30,10 +29,6 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan
 - **UI aplikasi Android disamakan dengan website**: tema Neo-Brutalism (palet lilac/kuning/cyan/lime/pink, garis hitam 3dp, bayangan keras, tombol "tertekan", bilah bawah kuning). Aplikasi kini selalu bertema terang seperti website.
 - Alamat repo menjadi `github.com/kazamaofficial-git/KazamaDownloader` dan alamat website menjadi `dlin.kazamasite.biz.id` (website, aplikasi Android, pembaruan otomatis, README).
 - Di Vercel, `NODE_ENV=production` dan `TRUST_PROXY` diaktifkan otomatis; cache dan HOME yt-dlp diarahkan ke `/tmp`.
-=======
-### Ditambahkan
-- `npm run setup` untuk memasang yt-dlp (pip) dan mengecek FFmpeg; server memperingatkan saat start bila yt-dlp belum ada.
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 
 ## [1.0.0] - 2026-10-11
 
@@ -61,8 +56,4 @@ Rilis perdana DownloadIn (KazamaDownloader) oleh KazamaTech.
 - Cloudflare Worker proxy, dashboard admin, dan konversi ugoira pixiv (tidak dibawa ke versi ini).
 
 ### Kredit
-<<<<<<< HEAD
 - Berdasar XyDownloader (© 2026 XyVerse, GPL-3.0-or-later); pemberitahuan hak cipta karya asal dipertahankan di `LICENSE`, halaman `/lisensi`, dan layar Lisensi aplikasi.
-=======
-- Berdasar LunaDownloader (© 2026 KazamaTech, GPL-3.0-or-later); pemberitahuan hak cipta karya asal dipertahankan di `LICENSE`, halaman `/lisensi`, dan layar Lisensi aplikasi.
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8

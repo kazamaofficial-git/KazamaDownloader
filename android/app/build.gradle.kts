@@ -34,15 +34,9 @@ android {
         versionName = appVersionName
         // Aplikasi berbahasa Indonesia: buang terjemahan library lain (hemat ukuran)
         resourceConfigurations += listOf("en", "in")
-<<<<<<< HEAD
         buildConfigField("String", "WEB_URL", "\"https://dlin.kazamasite.biz.id\"")
         buildConfigField("String", "QRIS_URL", "\"https://www.kazamasite.biz.id/images/qris.jpg\"")
         buildConfigField("String", "REPO_URL", "\"https://github.com/kazamaofficial-git/KazamaDownloader\"")
-=======
-        buildConfigField("String", "WEB_URL", "\"https://www.kazamasite.biz.id\"")
-        buildConfigField("String", "QRIS_URL", "\"https://www.kazamasite.biz.id/images/qris.jpg\"")
-        buildConfigField("String", "REPO_URL", "\"https://github.com/kazamaofficial/KazamaDownloader\"")
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     }
 
     sourceSets["main"].jniLibs.srcDir(xyJniDir)

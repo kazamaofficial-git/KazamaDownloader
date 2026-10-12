@@ -67,7 +67,6 @@ fun XyRoot(vm: MainViewModel) {
     // popup "yang baru" / pembaruan baru ditampilkan setelah splash selesai
     LaunchedEffect(showSplash) { if (!showSplash) vm.onStartup() }
     val cs = MaterialTheme.colorScheme
-<<<<<<< HEAD
     val online by vm.online.collectAsState()
     // Mode Offline: hanya tab Unduhan yang bisa dibuka
     LaunchedEffect(online, vm.tab) { if (!online && vm.tab != 1) vm.tab = 1 }
@@ -77,8 +76,6 @@ fun XyRoot(vm: MainViewModel) {
             snackbar.showSnackbar("Mode offline: hanya Unduhan yang bisa dibuka")
         }
     }
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 
     Box(Modifier.fillMaxSize().background(cs.background)) {
         Scaffold(
@@ -86,7 +83,6 @@ fun XyRoot(vm: MainViewModel) {
             snackbarHost = { SnackbarHost(snackbar) },
             bottomBar = {
                 Column {
-<<<<<<< HEAD
                     HorizontalDivider(color = Ink, thickness = NeoBorder)
                     NavigationBar(containerColor = NeoYellow, tonalElevation = 0.dp) {
                         val colors = NavigationBarItemDefaults.colors(
@@ -98,19 +94,6 @@ fun XyRoot(vm: MainViewModel) {
                         )
                         NavigationBarItem(
                             selected = vm.tab == 0, onClick = { vm.tab = 0 }, colors = colors, enabled = online,
-=======
-                    HorizontalDivider(color = cs.outlineVariant)
-                    NavigationBar(containerColor = cs.background, tonalElevation = 0.dp) {
-                        val colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = cs.primary,
-                            selectedTextColor = cs.onSurface,
-                            indicatorColor = cs.primaryContainer,
-                            unselectedIconColor = cs.onSurfaceVariant,
-                            unselectedTextColor = cs.onSurfaceVariant,
-                        )
-                        NavigationBarItem(
-                            selected = vm.tab == 0, onClick = { vm.tab = 0 }, colors = colors,
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                             icon = { Icon(Icons.Outlined.Home, null) }, label = { Text("Beranda") },
                         )
                         NavigationBarItem(
@@ -119,26 +102,17 @@ fun XyRoot(vm: MainViewModel) {
                             label = { Text(if (running > 0) "Unduhan ($running)" else "Unduhan") },
                         )
                         NavigationBarItem(
-<<<<<<< HEAD
                             selected = vm.tab == 2, onClick = { vm.tab = 2 }, colors = colors, enabled = online,
                             icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Atur") },
                         )
                         NavigationBarItem(
                             selected = vm.tab == 3, onClick = { vm.tab = 3 }, colors = colors, enabled = online,
-=======
-                            selected = vm.tab == 2, onClick = { vm.tab = 2 }, colors = colors,
-                            icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Atur") },
-                        )
-                        NavigationBarItem(
-                            selected = vm.tab == 3, onClick = { vm.tab = 3 }, colors = colors,
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                             icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("Tentang") },
                         )
                     }
                 }
             },
         ) { padding ->
-<<<<<<< HEAD
             Column(Modifier.padding(padding)) {
                 if (!online) OfflineBanner()
                 Box(Modifier.weight(1f)) {
@@ -148,14 +122,6 @@ fun XyRoot(vm: MainViewModel) {
                         2 -> SettingsScreen()
                         else -> AboutScreen(vm)
                     }
-=======
-            Box(Modifier.padding(padding)) {
-                when (vm.tab) {
-                    0 -> HomeScreen(vm) { msg -> scope.launch { snackbar.showSnackbar(msg) } }
-                    1 -> DownloadsScreen(vm)
-                    2 -> SettingsScreen()
-                    else -> AboutScreen(vm)
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                 }
             }
         }
@@ -171,7 +137,6 @@ fun XyRoot(vm: MainViewModel) {
         if (!showSplash) {
             when (val p = vm.popup) {
                 is Popup.WhatsNew -> BannerPopup(p.bannerUrl, onClose = { vm.closePopup() }, onOpen = { vm.openPopup() })
-<<<<<<< HEAD
                 is Popup.Update -> BannerPopup(
                     p.release.bannerUrl,
                     onClose = { vm.closePopup() },
@@ -179,9 +144,6 @@ fun XyRoot(vm: MainViewModel) {
                     actionLabel = "Perbarui sekarang · v${p.release.version}",
                     onAction = { vm.updateNow(p.release) },
                 )
-=======
-                is Popup.Update -> BannerPopup(p.release.bannerUrl, onClose = { vm.closePopup() }, onOpen = { vm.openPopup() })
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                 null -> Unit
             }
         }

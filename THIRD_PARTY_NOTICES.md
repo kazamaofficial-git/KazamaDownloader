@@ -7,11 +7,7 @@ DownloadIn (by KazamaTech) dirilis dengan lisensi **GPL-3.0-or-later** dan memak
 | Komponen | Lisensi | Hak cipta | Keterangan |
 |---|---|---|---|
 | [DownloadIn (KazamaDownloader)](https://github.com/kazamaofficial-git/KazamaDownloader) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 KazamaTech | Aplikasi, perubahan & penulisan ulang (Node.js/EJS, Android) |
-<<<<<<< HEAD
 | [XyDownloader / DownloadIn (karya asal)](https://github.com/xykal/XyDownloader) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 XyVerse | Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech |
-=======
-| [LunaDownloader - Telegram (karya asal)](https://t.me/KazamaDownloaderBot) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 KazamaTech | Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech |
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 | [youtubedl-android](https://github.com/JunkFood02/youtubedl-android) | [GPL-3.0](licenses/texts/GPL-3.0-only.txt) | Copyright (c) yausername, JunkFood02 & kontributor | Menjalankan Python + yt-dlp di Android |
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | [Unlicense](licenses/texts/Unlicense.txt) | yt-dlp contributors (public domain) | Engine pembaca link (diperbarui otomatis dari GitHub) |
 | [yt-dlp-ejs](https://github.com/yt-dlp/ejs) | [Unlicense](licenses/texts/Unlicense.txt) | yt-dlp contributors (public domain) | Skrip JavaScript tantangan YouTube |
@@ -42,13 +38,8 @@ DownloadIn (by KazamaTech) dirilis dengan lisensi **GPL-3.0-or-later** dan memak
 
 | Komponen | Lisensi | Hak cipta | Keterangan |
 |---|---|---|---|
-<<<<<<< HEAD
 | [DownloadIn (KazamaDownloader)](https://github.com/kazamaofficial-git/KazamaDownloader) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 KazamaTech | Aplikasi, perubahan & penulisan ulang (Node.js/EJS, Android) |
 | [XyDownloader / DownloadIn (karya asal)](https://github.com/xykal/XyDownloader) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 XyVerse | Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech |
-=======
-| [DownloadIn (KazamaDownloader)](https://github.com/kazamaofficial/KazamaDownloader) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 KazamaTech | Aplikasi, perubahan & penulisan ulang (Node.js/EJS, Android) |
-| [LunaDownloader - Telegram (karya asal)](https://t.me/KazamaDownloaderBot) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) 2026 KazamaTech | Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech |
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | [Unlicense](licenses/texts/Unlicense.txt) | yt-dlp contributors (public domain) | Extractor di server |
 | [Express](https://expressjs.com) | [MIT](licenses/texts/MIT.txt) | Copyright (c) 2009-2014 TJ Holowaychuk; 2013-2014 Roman Shtylman; 2014-2015 Douglas Christopher Wilson | Server web |
 | [EJS](https://ejs.co) | [Apache-2.0](licenses/texts/Apache-2.0.txt) | Copyright (c) Matthew Eernisse & kontributor | Template halaman |
@@ -56,10 +47,7 @@ DownloadIn (by KazamaTech) dirilis dengan lisensi **GPL-3.0-or-later** dan memak
 | [compression](https://github.com/expressjs/compression) | [MIT](licenses/texts/MIT.txt) | Copyright (c) 2014 Jonathan Ong; 2014-2017 Douglas Christopher Wilson | Kompresi respons |
 | [dotenv](https://github.com/motdotla/dotenv) | [BSD-2-Clause](licenses/texts/BSD-2-Clause.txt) | Copyright (c) 2015, Scott Motte | Membaca file .env |
 | [Lucide (gaya ikon)](https://lucide.dev/) | [ISC](licenses/texts/ISC.txt) | Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022. | Ikon garis |
-<<<<<<< HEAD
 | [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) | [GPL-3.0-or-later](licenses/texts/GPL-3.0-only.txt) | Copyright (c) Eugene Ware & kontributor; FFmpeg © para pengembang FFmpeg | Binary FFmpeg untuk deployment serverless (Vercel) |
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 
 ## Kode sumber komponen (L)GPL
 

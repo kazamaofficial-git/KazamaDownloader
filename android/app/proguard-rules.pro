@@ -20,3 +20,11 @@
 -dontwarn org.objectweb.asm.**
 -dontwarn javax.annotation.**
 -dontwarn org.slf4j.**
+
+# Dependensi opsional/anotasi yang hanya dirujuk saat kompilasi (aman diabaikan)
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn com.google.auto.value.**
+-dontwarn org.checkerframework.**
+-dontwarn javax.lang.model.**
+-dontwarn kotlinx.coroutines.debug.**
+-dontwarn kotlin.concurrent.atomics.**

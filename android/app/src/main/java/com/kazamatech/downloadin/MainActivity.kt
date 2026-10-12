@@ -25,14 +25,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-<<<<<<< HEAD
         enableEdgeToEdge(
             statusBarStyle = androidx.activity.SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
             navigationBarStyle = androidx.activity.SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
         )
-=======
-        enableEdgeToEdge()
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
         if (savedInstanceState == null) handleIntent(intent)
         requestNeededPermissions()
         watchFirstDownload()

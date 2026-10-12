@@ -6,10 +6,7 @@ const signer = require('../signer');
 const engine = require('../engine');
 const { catalog } = require('../platforms');
 const { handleDownload, handleMedia } = require('../downloader');
-<<<<<<< HEAD
 const releases = require('../releases');
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 
 const router = express.Router();
 router.use(express.json({ limit: '64kb' }));
@@ -24,7 +21,6 @@ router.get('/platforms', (req, res) => {
   res.set('Cache-Control', 'public, max-age=3600').json(catalog());
 });
 
-<<<<<<< HEAD
 router.get('/android', async (req, res) => {
   try {
     const r = await releases.latest();
@@ -39,8 +35,6 @@ router.get('/android', async (req, res) => {
   }
 });
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 router.all('/extract', async (req, res) => {
   if (!['GET', 'POST'].includes(req.method)) return res.status(405).json({ ok: false, error: 'method not allowed' });
   if (sec.uaBlocked(req.get('user-agent'))) {

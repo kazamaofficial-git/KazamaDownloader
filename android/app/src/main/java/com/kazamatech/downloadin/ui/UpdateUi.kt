@@ -59,7 +59,6 @@ import com.kazamatech.downloadin.R
 import com.kazamatech.downloadin.update.AppUpdater
 
 /**
-<<<<<<< HEAD
  * Popup pembaruan: gambar (aset rilis, cadangan gambar bawaan) + tombol X. Gambar ditekan -> halaman Pembaruan.
  * Untuk popup pembaruan ada tombol "Perbarui sekarang" yang langsung mengunduh + memasang versi baru.
  */
@@ -76,17 +75,6 @@ fun BannerPopup(
         Box(Modifier.fillMaxWidth().padding(horizontal = 28.dp), contentAlignment = Alignment.Center) {
             androidx.compose.foundation.layout.Column(Modifier.widthIn(max = 420.dp).fillMaxWidth()) {
             Box(Modifier.fillMaxWidth()) {
-=======
- * Popup pembaruan: HANYA gambar (ilustrasi AI dari aset rilis, cadangan gambar bawaan) + tombol X.
- * Gambar ditekan -> halaman Pembaruan.
- */
-@Composable
-fun BannerPopup(bannerUrl: String?, onClose: () -> Unit, onOpen: () -> Unit) {
-    val context = LocalContext.current
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Box(Modifier.fillMaxWidth().padding(horizontal = 28.dp), contentAlignment = Alignment.Center) {
-            Box(Modifier.widthIn(max = 420.dp).fillMaxWidth()) {
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                 AsyncImage(
                     model = ImageRequest.Builder(context).data(bannerUrl ?: R.drawable.update_banner).crossfade(true).build(),
                     contentDescription = "Ada pembaruan DownloadIn — ketuk untuk melihat",
@@ -108,14 +96,11 @@ fun BannerPopup(bannerUrl: String?, onClose: () -> Unit, onOpen: () -> Unit) {
                     }
                 }
             }
-<<<<<<< HEAD
             if (actionLabel != null) {
                 androidx.compose.foundation.layout.Spacer(Modifier.height(16.dp))
                 PrimaryButton(actionLabel, Modifier.fillMaxWidth(), icon = R.drawable.ic_download, onClick = onAction)
             }
             }
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
         }
     }
 }

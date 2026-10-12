@@ -19,11 +19,7 @@ import org.json.JSONObject
 import java.io.File
 
 /**
-<<<<<<< HEAD
  * Pembaruan aplikasi dari GitHub Releases (kazamaofficial-git/KazamaDownloader).
-=======
- * Pembaruan aplikasi dari GitHub Releases (kazamaofficial/KazamaDownloader).
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
  * - cek rilis terbaru (API publik GitHub, tanpa token)
  * - unduh APK sesuai arsitektur HP
  * - pasang lewat PackageInstaller. Android 12+: tanpa dialog konfirmasi (USER_ACTION_NOT_REQUIRED)
@@ -31,11 +27,7 @@ import java.io.File
  */
 object AppUpdater {
     private const val TAG = "XyUpdater"
-<<<<<<< HEAD
     const val REPO = "kazamaofficial-git/KazamaDownloader"
-=======
-    const val REPO = "kazamaofficial/KazamaDownloader"
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     private const val API = "https://api.github.com/repos/$REPO/releases/latest"
     private const val PREFS = "xy_update"
     const val BANNER_ASSET = "update-banner.webp"

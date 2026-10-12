@@ -29,22 +29,14 @@ const fail = (res, status, code, error, extra = {}) => {
 
 function ytArgs(p) {
   const args = [...baseArgs(p.s), '-f', p.sel, '--no-part', '--no-mtime', '--concurrent-fragments', '4'];
-<<<<<<< HEAD
   const ff = cfg.ffmpeg;
   if (ff !== 'ffmpeg') args.push('--ffmpeg-location', ff);
-=======
-  if (cfg.ffmpeg !== 'ffmpeg') args.push('--ffmpeg-location', cfg.ffmpeg);
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   return args;
 }
 
 /** Pipe langsung stdout yt-dlp -> respons (video/audio langsung tanpa merge). */
 function streamJob(p, req, res, dl) {
-<<<<<<< HEAD
   const child = spawn(cfg.ytdlp, [...ytArgs(p), '--quiet', '-o', '-', '--', p.s], { stdio: ['ignore', 'pipe', 'pipe'], env: cfg.childEnv() });
-=======
-  const child = spawn(cfg.ytdlp, [...ytArgs(p), '--quiet', '-o', '-', '--', p.s], { stdio: ['ignore', 'pipe', 'pipe'] });
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   let started = false; let err = '';
   const done = () => sec.releaseJob();
   child.stderr.on('data', (d) => { if (err.length < 4000) err += d; });
@@ -77,11 +69,7 @@ function fileJob(p, req, res, dl) {
   else if (p.mg) args.push('--merge-output-format', p.mg);
   args.push('--', p.s);
 
-<<<<<<< HEAD
   const child = spawn(cfg.ytdlp, args, { stdio: ['ignore', 'ignore', 'pipe'], env: cfg.childEnv() });
-=======
-  const child = spawn(cfg.ytdlp, args, { stdio: ['ignore', 'ignore', 'pipe'] });
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   let err = ''; let cleaned = false;
   const cleanup = () => {
     if (cleaned) return; cleaned = true;

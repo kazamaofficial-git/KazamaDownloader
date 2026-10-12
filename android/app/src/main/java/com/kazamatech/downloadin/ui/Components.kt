@@ -3,15 +3,9 @@ package com.kazamatech.downloadin.ui
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-<<<<<<< HEAD
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-=======
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,10 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-<<<<<<< HEAD
 import androidx.compose.ui.graphics.Color
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,7 +42,6 @@ import coil.request.ImageRequest
 import com.kazamatech.downloadin.Platform
 import com.kazamatech.downloadin.R
 
-<<<<<<< HEAD
 /** Kartu Neo-Brutalism: border hitam tebal + bayangan keras. */
 @Composable
 fun XyCard(modifier: Modifier = Modifier, padding: Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) {
@@ -60,16 +50,6 @@ fun XyCard(modifier: Modifier = Modifier, padding: Dp = 16.dp, content: @Composa
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
         border = androidx.compose.foundation.BorderStroke(NeoBorder, Ink),
-=======
-/** Kartu datar dengan border tipis (tanpa bayangan/gradasi). */
-@Composable
-fun XyCard(modifier: Modifier = Modifier, padding: Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     ) {
         Column(Modifier.padding(padding), content = content)
     }
@@ -86,7 +66,6 @@ fun PrimaryButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-<<<<<<< HEAD
         modifier = modifier.height(50.dp).neoShadow(4.dp, 12.dp),
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(horizontal = 18.dp),
@@ -95,21 +74,12 @@ fun PrimaryButton(
             containerColor = NeoYellow, contentColor = Ink,
             disabledContainerColor = Color(0xFFF2EFFF), disabledContentColor = Color(0xFF3B3556),
         ),
-=======
-        modifier = modifier.height(48.dp),
-        shape = RoundedCornerShape(12.dp),
-        contentPadding = PaddingValues(horizontal = 18.dp),
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     ) {
         if (icon != null) {
             Icon(painterResource(icon), null, Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
         }
-<<<<<<< HEAD
         Text(text, fontWeight = FontWeight.ExtraBold)
-=======
-        Text(text, fontWeight = FontWeight.SemiBold)
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     }
 }
 
@@ -119,7 +89,6 @@ fun SmallAction(text: String, @DrawableRes icon: Int, onClick: () -> Unit) {
         onClick = onClick,
         shape = RoundedCornerShape(10.dp),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
-<<<<<<< HEAD
         modifier = Modifier.height(36.dp).neoShadow(3.dp, 10.dp),
         border = androidx.compose.foundation.BorderStroke(2.dp, Ink),
         colors = ButtonDefaults.filledTonalButtonColors(containerColor = NeoCyan, contentColor = Ink),
@@ -127,17 +96,6 @@ fun SmallAction(text: String, @DrawableRes icon: Int, onClick: () -> Unit) {
         Icon(painterResource(icon), null, Modifier.size(16.dp))
         Spacer(Modifier.width(6.dp))
         Text(text, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-=======
-        modifier = Modifier.height(34.dp),
-        colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-    ) {
-        Icon(painterResource(icon), null, Modifier.size(16.dp))
-        Spacer(Modifier.width(6.dp))
-        Text(text, fontSize = 13.sp)
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     }
 }
 
@@ -159,22 +117,13 @@ fun OptionRow(@DrawableRes icon: Int, title: String, subtitle: String, action: S
         onClick = onClick,
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
-<<<<<<< HEAD
         border = androidx.compose.foundation.BorderStroke(NeoBorder, Ink),
         modifier = Modifier.fillMaxWidth().neoShadow(4.dp, 14.dp),
-=======
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        modifier = Modifier.fillMaxWidth(),
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     ) {
         Row(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 Modifier.size(36.dp).clip(RoundedCornerShape(10.dp))
-<<<<<<< HEAD
                     .border(2.dp, Ink, RoundedCornerShape(10.dp)),
-=======
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp)),
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(painterResource(icon), null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
@@ -186,19 +135,11 @@ fun OptionRow(@DrawableRes icon: Int, title: String, subtitle: String, action: S
                     Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
-<<<<<<< HEAD
             Surface(shape = RoundedCornerShape(10.dp), color = NeoLime, border = androidx.compose.foundation.BorderStroke(2.dp, Ink)) {
                 Row(Modifier.padding(horizontal = 12.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(painterResource(R.drawable.ic_download), null, Modifier.size(15.dp), tint = Ink)
                     Spacer(Modifier.width(6.dp))
                     Text(action, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
-=======
-            Surface(shape = RoundedCornerShape(10.dp), color = MaterialTheme.colorScheme.primary) {
-                Row(Modifier.padding(horizontal = 12.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(painterResource(R.drawable.ic_download), null, Modifier.size(15.dp), tint = MaterialTheme.colorScheme.onPrimary)
-                    Spacer(Modifier.width(6.dp))
-                    Text(action, color = MaterialTheme.colorScheme.onPrimary, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                 }
             }
         }
@@ -294,11 +235,7 @@ fun formatDuration(sec: Double): String {
 /** Logo mark KazamaTech (monokrom). Hitam/putih mengikuti tema. */
 @Composable
 fun KazamaTechLogo(size: Dp = 24.dp, modifier: Modifier = Modifier) {
-<<<<<<< HEAD
     val res = R.drawable.kazamatech_mark // tema selalu terang (Neo-Brutalism)
-=======
-    val res = if (isSystemInDarkTheme()) R.drawable.kazamatech_mark_white else R.drawable.kazamatech_mark
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     Image(
         painterResource(res),
         contentDescription = "KazamaTech",
@@ -306,7 +243,6 @@ fun KazamaTechLogo(size: Dp = 24.dp, modifier: Modifier = Modifier) {
         contentScale = ContentScale.Fit,
     )
 }
-<<<<<<< HEAD
 
 /** Pita "Mode offline" di atas konten saat tidak ada internet. */
 @Composable
@@ -326,5 +262,3 @@ fun OfflineBanner() {
         androidx.compose.material3.HorizontalDivider(color = Ink, thickness = NeoBorder)
     }
 }
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8

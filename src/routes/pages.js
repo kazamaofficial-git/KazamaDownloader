@@ -3,12 +3,9 @@ const express = require('express');
 const { catalog } = require('../platforms');
 const components = require('../../licenses/components.json');
 
-<<<<<<< HEAD
 const cfg = require('../config');
 const releases = require('../releases');
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -19,7 +16,6 @@ router.get('/lisensi', (req, res) => {
   res.render('licenses', { title: 'Lisensi — DownloadIn', page: 'licenses', web: components.web, trademarks: components.trademarks });
 });
 
-<<<<<<< HEAD
 router.get('/ios', (req, res) => {
   res.render('ios', { title: 'DownloadIn untuk iPhone & iPad', page: 'ios' });
 });
@@ -54,6 +50,4 @@ router.get('/download/ios', async (req, res) => {
   }
 });
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 module.exports = router;

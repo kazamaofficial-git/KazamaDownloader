@@ -386,10 +386,7 @@ function baseArgs(url) {
   const args = ['--ignore-config', '--no-warnings', '--no-playlist', '--socket-timeout', '20', '--retries', '2'];
   if (fs.existsSync(path.join(PLUGIN_DIR, 'yt_dlp_plugins'))) args.push('--plugin-dirs', PLUGIN_DIR);
   if (cfg.extractProxy && inProxyScope(url)) args.push('--proxy', cfg.extractProxy);
-<<<<<<< HEAD
   if (cfg.serverless) args.push('--cache-dir', path.join(require('node:os').tmpdir(), 'yt-dlp-cache'));
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   if (isYoutube(url)) args.push('--js-runtimes', `node:${process.execPath}`);
   return args;
 }
@@ -404,11 +401,7 @@ function attempts(url) {
 
 function runYtdlp(args, { timeout = cfg.extractTimeoutMs, maxBuffer = 64 * 1024 * 1024 } = {}) {
   return new Promise((resolve, reject) => {
-<<<<<<< HEAD
     const child = spawn(cfg.ytdlp, args, { stdio: ['ignore', 'pipe', 'pipe'], env: cfg.childEnv() });
-=======
-    const child = spawn(cfg.ytdlp, args, { stdio: ['ignore', 'pipe', 'pipe'] });
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     const out = []; let outLen = 0; let err = '';
     const timer = setTimeout(() => { child.kill('SIGKILL'); err += '\ntimed out'; }, timeout);
     child.stdout.on('data', (d) => { outLen += d.length; if (outLen > maxBuffer) child.kill('SIGKILL'); else out.push(d); });

@@ -55,14 +55,11 @@
     clear() { try { localStorage.removeItem(HKEY); } catch { /* abaikan */ } },
   };
 
-<<<<<<< HEAD
   // PWA: service worker kecil supaya bisa dipasang ("Add to Home Screen") di iOS/Android
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   }
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   const form = $('#form');
   const dlg = $('#history-dialog');
 
@@ -215,7 +212,6 @@
   $('#history-clear').addEventListener('click', () => { hist.clear(); renderHistory(); toast('Riwayat dihapus'); });
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 
-<<<<<<< HEAD
   // ---- info APK terbaru (unduh langsung dari website) ----
   const apkInfo = $('#apk-info');
   if (apkInfo) {
@@ -233,8 +229,6 @@
     }).catch(() => { apkInfo.textContent = 'Tekan tombol di atas untuk mengunduh versi terbaru.'; });
   }
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   // dukung ?url=... (mis. dari bookmark / share target)
   const q = new URLSearchParams(location.search).get('url');
   if (q) { input.value = q; showDetected(); form.requestSubmit(); }

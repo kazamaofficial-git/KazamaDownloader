@@ -1,10 +1,5 @@
 <resources>
-<<<<<<< HEAD
     <color name="xy_bg">#FFE7E2FF</color>
     <color name="xy_primary">#FF7B5CFF</color>
-=======
-    <color name="xy_bg">#FFFFFFFF</color>
-    <color name="xy_primary">#FF6D4AFF</color>
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     <color name="ic_launcher_background">#FF6D4AFF</color>
 </resources>

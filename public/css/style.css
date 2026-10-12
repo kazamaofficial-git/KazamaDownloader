@@ -209,7 +209,6 @@ tr:last-child td { border-bottom: 0; }
 .qris { display: block; background: #fff; border: var(--bw) solid var(--ink); border-radius: var(--r); box-shadow: var(--sh-sm); padding: 10px; width: min(300px, 100%); transform: rotate(2deg); }
 .qris img { width: 100%; height: auto; border-radius: 8px; }
 @media (max-width: 760px) { .promo-donate { grid-template-columns: 1fr; } .qris { justify-self: center; transform: none; } }
-<<<<<<< HEAD
 
 /* ---- Aplikasi HP (Android / iOS) ---- */
 .apps { display: grid; grid-template-columns: 1.2fr 1fr; gap: 22px; margin-top: 6px; }
@@ -225,5 +224,3 @@ tr:last-child td { border-bottom: 0; }
 .card-pad h2 { font-size: clamp(1.4rem, 3.4vw, 1.9rem); }
 .cards-col { display: grid; gap: 24px; }
 .prose pre { margin: 0; overflow-x: auto; background: var(--ink); color: var(--lime); border-radius: 10px; padding: 12px 14px; font-size: .88rem; }
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8

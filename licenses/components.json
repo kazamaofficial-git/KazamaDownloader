@@ -1,36 +1,20 @@
 {
-<<<<<<< HEAD
   "_comment": "Daftar komponen pihak ketiga DownloadIn (KazamaDownloader). Sumber tunggal untuk layar Lisensi (Android), halaman /lisensi (web) dan THIRD_PARTY_NOTICES.md (scripts/gen_notices.py).",
-=======
-  "_comment": "Daftar komponen pihak ketiga DownloadIn (KazamaDownloader). Sumber tunggal untuk layar Lisensi (Android), Halaman /lisensi (web) dan THIRD_PARTY_NOTICES.md (scripts/gen_notices.py).",
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
   "android": [
     {
       "name": "DownloadIn (KazamaDownloader)",
       "license": "GPL-3.0-or-later",
       "file": "GPL-3.0-only.txt",
-<<<<<<< HEAD
       "url": "https://github.com/kazamaofficial-git/KazamaDownloader",
-=======
-      "url": "https://github.com/kazamaofficial/KazamaDownloader",
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
       "copyright": "Copyright (c) 2026 KazamaTech",
       "note": "Aplikasi, perubahan & penulisan ulang (Node.js/EJS, Android)"
     },
     {
-<<<<<<< HEAD
       "name": "XyDownloader / DownloadIn (karya asal)",
       "license": "GPL-3.0-or-later",
       "file": "GPL-3.0-only.txt",
       "url": "https://github.com/xykal/XyDownloader",
       "copyright": "Copyright (c) 2026 XyVerse",
-=======
-      "name": "LunaDownloader- Telegram (karya asal)",
-      "license": "GPL-3.0-or-later",
-      "file": "GPL-3.0-only.txt",
-      "url": "https://t.me/KazamaDownloaderBot",
-      "copyright": "Copyright (c) 2026 KazamaTech",
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
       "note": "Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech"
     },
     {
@@ -239,28 +223,16 @@
       "name": "DownloadIn (KazamaDownloader)",
       "license": "GPL-3.0-or-later",
       "file": "GPL-3.0-only.txt",
-<<<<<<< HEAD
       "url": "https://github.com/kazamaofficial-git/KazamaDownloader",
-=======
-      "url": "https://github.com/kazamaofficial/KazamaDownloader",
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
       "copyright": "Copyright (c) 2026 KazamaTech",
       "note": "Aplikasi, perubahan & penulisan ulang (Node.js/EJS, Android)"
     },
     {
-<<<<<<< HEAD
       "name": "XyDownloader / DownloadIn (karya asal)",
       "license": "GPL-3.0-or-later",
       "file": "GPL-3.0-only.txt",
       "url": "https://github.com/xykal/XyDownloader",
       "copyright": "Copyright (c) 2026 XyVerse",
-=======
-      "name": "LunaDownloader - Telegram (karya asal)",
-      "license": "GPL-3.0-or-later",
-      "file": "GPL-3.0-only.txt",
-      "url": "https://t.me/KazamaDowmloaderBot",
-      "copyright": "Copyright (c) 2026 KazamaTech",
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
       "note": "Dasar kode & plugin extractor; dimodifikasi oleh KazamaTech"
     },
     {
@@ -318,7 +290,6 @@
       "url": "https://lucide.dev/",
       "copyright": "Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.",
       "note": "Ikon garis"
-<<<<<<< HEAD
     },
     {
       "name": "ffmpeg-static",
@@ -331,9 +302,3 @@
   ],
   "trademarks": "Logo dan nama platform (TikTok, Douyin, Instagram, YouTube, dll) adalah merek dagang milik pemiliknya masing-masing, hanya dipakai untuk menunjukkan kompatibilitas. DownloadIn tidak berafiliasi dengan platform mana pun."
 }
-=======
-    }
-  ],
-  "trademarks": "Logo dan nama platform (TikTok, Douyin, Instagram, YouTube, dll) adalah merek dagang milik pemiliknya masing-masing, hanya dipakai untuk menunjukkan kompatibilitas. DownloadIn tidak berafiliasi dengan platform mana pun."
-}
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8

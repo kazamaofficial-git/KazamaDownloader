@@ -94,11 +94,7 @@ fun HomeScreen(vm: MainViewModel, toast: (String) -> Unit) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
                     keyboardActions = KeyboardActions(onGo = { focus.clearFocus(); vm.fetch() }),
                     colors = OutlinedTextFieldDefaults.colors(
-<<<<<<< HEAD
                         focusedBorderColor = Ink, unfocusedBorderColor = Ink, focusedContainerColor = androidx.compose.ui.graphics.Color.White, unfocusedContainerColor = androidx.compose.ui.graphics.Color.White,
-=======
-                        focusedBorderColor = cs.primary, unfocusedBorderColor = cs.outline,
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
                     ),
                     leadingIcon = if (detected != null) {
                         { PlatformLogo(detected, 22.dp) }

@@ -127,6 +127,26 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon --stacktrace
 
+      - name: Diagnosa R8 (hanya jika build gagal)
+        if: failure()
+        working-directory: android
+        run: |
+          echo "=== missing_rules.txt (aturan -dontwarn yang disarankan R8) ==="
+          find app/build -name "missing_rules.txt" -exec sh -c 'echo "--- $1"; cat "$1"' _ {} \; || true
+          echo "=== baris error R8 / Missing class ==="
+          grep -rhn "Missing class\|R8:\|ERROR:" app/build/outputs/logs 2>/dev/null | head -40 || true
+
+      - name: Unggah diagnosa R8
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r8-diagnostics
+          if-no-files-found: ignore
+          path: |
+            android/app/build/outputs/mapping/release/missing_rules.txt
+            android/app/build/outputs/mapping/release/configuration.txt
+            android/app/build/outputs/logs/**
+
       - name: Rapikan nama file & cek isi APK
         run: |
           mkdir -p out

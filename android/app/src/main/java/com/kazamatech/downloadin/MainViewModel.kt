@@ -10,7 +10,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.kazamatech.downloadin.update.AppUpdater
 import kotlinx.coroutines.Dispatchers
-<<<<<<< HEAD
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,9 +17,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-=======
-import kotlinx.coroutines.Job
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -74,7 +70,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val engine = XyApp.engine
     val updateState = AppUpdater.state
 
-<<<<<<< HEAD
     /** Mode Offline: false = tidak ada internet. Jeda 1,5 dtk saat putus agar pindah Wi-Fi/seluler tidak berkedip. */
     @OptIn(ExperimentalCoroutinesApi::class)
     val online: StateFlow<Boolean> = Connectivity.flow(ctx)
@@ -84,9 +79,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     init {
         // internet kembali -> cek pembaruan lagi (hormati jeda 6 jam)
         viewModelScope.launch { online.collect { on -> if (on && startupDone) checkUpdateIfDue() } }
-=======
-    init {
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
         Downloads.load(ctx)
         Downloads.ensureStarted(ctx)   // pulihkan antrean + tandai yang terputus
         // Sinkronkan status riwayat dengan WorkManager (mis. setelah aplikasi ditutup paksa)
@@ -291,7 +283,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             if (withContext(Dispatchers.IO) { AppUpdater.shouldShowWhatsNew(ctx) }) {
                 popup = Popup.WhatsNew(AppUpdater.currentBannerUrl())
             }
-<<<<<<< HEAD
             checkUpdateIfDue()
         }
     }
@@ -304,14 +295,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val rel = AppUpdater.check(ctx) ?: return
         if (AppUpdater.compare(rel.version, AppUpdater.currentVersion) > 0 && AppUpdater.dismissed(ctx) != rel.version) {
             if (popup == null) popup = Popup.Update(rel) else pendingUpdatePopup = rel
-=======
-            val due = System.currentTimeMillis() - AppUpdater.lastCheck(ctx) > 6 * 3600_000L
-            if (!due) return@launch
-            val rel = AppUpdater.check(ctx) ?: return@launch
-            if (AppUpdater.compare(rel.version, AppUpdater.currentVersion) > 0 && AppUpdater.dismissed(ctx) != rel.version) {
-                if (popup == null) popup = Popup.Update(rel) else pendingUpdatePopup = rel
-            }
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
         }
     }
 
@@ -340,7 +323,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { AppUpdater.check(ctx) }
     }
 
-<<<<<<< HEAD
     /** Tombol "Perbarui sekarang" di popup: langsung unduh + pasang, progresnya tampil di layar Pembaruan. */
     fun updateNow(release: AppUpdater.Release) {
         popup = null
@@ -349,8 +331,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         startUpdate(release)
     }
 
-=======
->>>>>>> 70f8a71c6aff65fbf977c765a20ba116576847b8
     fun startUpdate(release: AppUpdater.Release) {
         viewModelScope.launch { AppUpdater.downloadAndInstall(ctx, release) }
     }
