@@ -1,0 +1,41 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="main" class="wrap prose">
+  <h1>DownloadIn di iPhone &amp; iPad</h1>
+  <p class="lead">iOS tidak mengizinkan aplikasi menjalankan yt-dlp dan FFmpeg di dalam perangkat, jadi di iPhone DownloadIn bekerja lewat server <b><%= app.site.replace('https://', '') %></b>. Ada tiga cara, pilih yang paling cocok.</p>
+
+  <div class="cards-col">
+    <section class="card card-pad" id="pwa">
+      <h2>1. Aplikasi web (paling mudah)</h2>
+      <p>Tanpa App Store, tanpa komputer. Tampilannya sama persis dengan website.</p>
+      <ol class="steps-list">
+        <li>Buka <a href="<%= app.site %>"><%= app.site.replace('https://', '') %></a> di <b>Safari</b>.</li>
+        <li>Ketuk tombol <b>Bagikan</b> (kotak dengan panah ke atas).</li>
+        <li>Pilih <b>Tambah ke Layar Utama</b>, lalu <b>Tambah</b>.</li>
+      </ol>
+      <p>Setelah itu DownloadIn muncul di layar utama seperti aplikasi biasa. File hasil unduhan disimpan lewat Safari ke <b>Unduhan</b> di app Berkas.</p>
+    </section>
+
+    <section class="card card-pad" id="shortcut">
+      <h2>2. Shortcut: simpan langsung ke Foto</h2>
+      <p>Bagikan link dari TikTok/Instagram/X ke Shortcut ini, dan videonya masuk ke Foto. Buat sekali di app <b>Pintasan (Shortcuts)</b>:</p>
+      <ol class="steps-list">
+        <li>Buat pintasan baru. Di pengaturan pintasan aktifkan <b>Tampilkan di Lembar Bagikan</b> dan terima <b>URL</b>.</li>
+        <li>Tambah aksi <b>Dapatkan Isi URL</b> (Get Contents of URL): URL <code><%= app.site %>/api/extract</code>, Metode <b>POST</b>, Isi Permintaan <b>JSON</b>, tambah bidang teks <code>url</code> dengan nilai <b>Input Pintasan</b>.</li>
+        <li>Tambah <b>Dapatkan Nilai Kamus</b> <code>entries</code>, lalu <b>Dapatkan Item dari Daftar</b> (Item Pertama), lalu <b>Dapatkan Nilai Kamus</b> <code>video</code>, <b>Item Pertama</b>, dan terakhir <code>url</code>. (Item pertama = kualitas tertinggi. Untuk MP3, pakai <code>audio</code>.)</li>
+        <li>Tambah aksi <b>Teks</b>: <code><%= app.site %></code> + hasil langkah 3 + <code>&amp;dl=1</code>.</li>
+        <li>Tambah <b>Dapatkan Isi URL</b> dengan teks itu, lalu <b>Simpan ke Album Foto</b>.</li>
+      </ol>
+      <p>Link unduhan dari server berlaku 6 jam, dan proses gabungan video + audio bisa butuh beberapa detik sebelum file mulai terunduh.</p>
+    </section>
+
+    <section class="card card-pad" id="ipa">
+      <h2>3. Aplikasi iOS (IPA)</h2>
+      <p>Aplikasi SwiftUI dengan tampilan Neo-Brutalism yang sama. Aplikasi ini <b>tidak ada di App Store</b>, jadi dipasang lewat sideload: AltStore, Sideloadly, atau TrollStore. IPA ini tidak ditandatangani, jadi alat sideload yang menandatanganinya dengan Apple ID-mu. Dengan Apple ID gratis, masa berlakunya 7 hari dan perlu dipasang ulang.</p>
+      <p><a class="btn btn-cyan btn-lg" href="/download/ios"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Unduh IPA</span></a></p>
+    </section>
+  </div>
+
+  <p><a class="btn btn-yellow" href="/"><span>Kembali ke beranda</span></a></p>
+</main>
+<%- include('partials/footer') %>

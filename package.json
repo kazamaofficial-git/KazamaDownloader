@@ -1,0 +1,38 @@
+{
+  "name": "kazama-downloader",
+  "version": "1.2.0",
+  "description": "DownloadIn (KazamaDownloader) — download video, MP3 & foto dari 1.700+ situs. Node.js + Express + EJS, UI Neo-Brutalism.",
+  "author": "KazamaDev (KazamaTech)",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/setup.js --if-missing && node server.js",
+    "dev": "node scripts/setup.js --if-missing && node --watch server.js",
+    "test": "node --test",
+    "setup": "node scripts/setup.js",
+    "start:only": "node server.js",
+    "vercel-build": "node scripts/vercel-prepare.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazamaofficial-git/KazamaDownloader.git"
+  },
+  "homepage": "https://github.com/kazamaofficial-git/KazamaDownloader#readme",
+  "bugs": {
+    "url": "https://github.com/kazamaofficial-git/KazamaDownloader/issues"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "^5.2.0"
+  }
+}
