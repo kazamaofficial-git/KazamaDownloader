@@ -1,0 +1,126 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main id="main">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <h1>Tempel link.<br>Unduh filenya.</h1>
+      <p class="lead">Video tanpa watermark, MP3, foto slide dan Live Photo dari TikTok, Instagram, X, Bilibili, pixiv dan 1.700+ situs lain. Gratis, tanpa akun.</p>
+      <span class="sticker" aria-hidden="true">1.700+<br>situs</span>
+    </div>
+
+    <form id="form" class="slab" autocomplete="off" novalidate>
+      <label class="sr" for="url">Link video atau postingan</label>
+      <div class="slab-field">
+        <svg class="ico" aria-hidden="true"><use href="#i-link"/></svg>
+        <input id="url" name="url" type="text" inputmode="url" spellcheck="false" enterkeyhint="go" placeholder="Tempel link video, postingan, atau karya">
+        <button type="button" id="clear" class="icon-btn hidden" aria-label="Hapus isi"><svg class="ico"><use href="#i-x"/></svg></button>
+        <button type="button" id="paste" class="btn btn-white btn-sm"><svg class="ico" aria-hidden="true"><use href="#i-clipboard"/></svg><span>Tempel</span></button>
+      </div>
+      <button type="submit" id="go" class="btn btn-yellow btn-lg">
+        <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span id="go-label">Ambil file</span>
+      </button>
+    </form>
+    <p id="detected" class="detected" aria-live="polite"></p>
+  </section>
+
+  <section id="result" class="wrap result hidden" aria-live="polite" aria-label="Hasil"></section>
+
+  <section id="platforms" class="wrap block">
+    <h2>Platform yang didukung</h2>
+    <p class="block-sub"><%= catalog.total_featured %> platform unggulan di bawah ini, ditambah situs lain yang dikenali yt-dlp. Link dari situs di luar daftar tetap dicoba.</p>
+    <% catalog.regions.forEach(function (r) { %>
+      <% if (r.platforms.length) { %>
+      <div class="region">
+        <h3><span aria-hidden="true"><%= r.flag %></span> <%= r.name %></h3>
+        <ul class="tiles">
+          <% r.platforms.forEach(function (p) { %>
+          <li class="tile" style="--brand: <%= p.color %>" <% if (p.note) { %>title="<%= p.note %>"<% } %>>
+            <img src="<%= p.logo %>" width="28" height="28" alt="" loading="lazy">
+            <span><%= p.name %></span>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+    <% }) %>
+  </section>
+
+  <section id="how" class="wrap block">
+    <h2>Cara kerja</h2>
+    <ol class="steps">
+      <li class="step step-1">
+        <b>Salin link</b>
+        <p>Buka postingan atau video di aplikasinya, lalu pilih Bagikan &rarr; Salin link.</p>
+      </li>
+      <li class="step step-2">
+        <b>Tempel di sini</b>
+        <p>Tempel ke kolom di atas dan tekan Ambil file. Teks share yang panjang juga boleh, linknya diambil otomatis.</p>
+      </li>
+      <li class="step step-3">
+        <b>Pilih kualitas</b>
+        <p>Pilih resolusi video, MP3 atau foto yang kamu mau. File langsung terunduh ke perangkatmu.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="android" class="wrap block">
+    <h2>Aplikasi untuk HP</h2>
+    <div class="apps">
+      <div class="promo promo-android">
+        <h3>Android</h3>
+        <p>yt-dlp dan FFmpeg berjalan di dalam aplikasi, jadi tidak butuh server. Pratinjau video, galeri foto, riwayat unduhan, dan pembaruan otomatis. Tampilannya sama dengan website ini.</p>
+        <p class="promo-actions">
+          <a class="btn btn-lime btn-lg" id="apk-btn" href="/download/android"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Unduh APK</span></a>
+        </p>
+        <p class="apk-info" id="apk-info">Mengecek versi terbaru…</p>
+        <p class="apk-abis hidden" id="apk-abis"></p>
+      </div>
+      <div class="promo promo-ios">
+        <h3>iPhone &amp; iPad</h3>
+        <p>Pasang sebagai aplikasi web langsung dari Safari (tanpa App Store), pakai Shortcut untuk menyimpan ke Foto, atau pasang aplikasi iOS-nya.</p>
+        <p class="promo-actions">
+          <a class="btn btn-cyan btn-lg" href="/ios"><svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg><span>Cara pasang di iOS</span></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="donasi" class="wrap block">
+    <div class="promo promo-donate">
+      <div class="donate-copy">
+        <h2>Dukung DownloadIn</h2>
+        <p>DownloadIn gratis dan tanpa iklan. Biaya server dan waktu pengembangan ditanggung <%= app.org %>. Kalau terbantu, kamu bisa donasi lewat <b>QRIS</b> — bisa dibayar dari semua e-wallet dan m-banking. Berapa pun sangat berarti.</p>
+        <p class="donate-note">Donasi bersifat sukarela dan tidak membuka fitur tambahan.</p>
+        <a class="btn btn-yellow" href="<%= app.qris %>" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span>Buka QRIS ukuran penuh</span></a>
+      </div>
+      <a class="qris" href="<%= app.qris %>" target="_blank" rel="noopener" aria-label="Buka gambar QRIS donasi">
+        <img src="<%= app.qris %>" alt="Kode QRIS untuk donasi ke KazamaTech" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+      </a>
+    </div>
+  </section>
+
+  <section id="faq" class="wrap block">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details><summary>Gratis? Ada batasan?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Gratis. Supaya adil, ada batas wajar jumlah permintaan per menit untuk tiap pengguna.</p></details>
+      <details><summary>Kenapa YouTube atau Bilibili kadang gagal?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Beberapa platform memblokir IP server (datacenter) dengan cek anti-bot. Kalau gagal, coba lagi beberapa saat kemudian. Pemilik server bisa memasang proxy atau cookies untuk meningkatkan keberhasilannya.</p></details>
+      <details><summary>Bisa ambil foto slide dan Live Photo?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Bisa untuk TikTok (mode foto), Douyin, Xiaohongshu, Kuaishou, X, Instagram, Threads, Bluesky dan Weibo. Semua foto tampil dalam galeri, dan kamu bisa mengunduhnya satu per satu atau sekaligus.</p></details>
+      <details><summary>Ada versi Android?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Ada. Tekan Unduh APK di bagian Aplikasi untuk HP, langsung terunduh dari website ini tanpa membuka GitHub. Aplikasinya bisa memperbarui dirinya sendiri. Untuk iPhone/iPad, lihat halaman iOS.</p></details>
+      <details><summary>Konten privat atau premium?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Tidak didukung. DownloadIn hanya mengambil konten publik. Konten berbayar atau berDRM tidak bisa diunduh.</p></details>
+      <details><summary>Apakah file saya disimpan di server?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Tidak. File gabungan (video + audio atau MP3) dibuat sementara di server hanya selama proses unduhan, lalu langsung dihapus.</p></details>
+    </div>
+  </section>
+</main>
+
+<dialog id="history-dialog" aria-labelledby="history-title">
+  <div class="dlg-head">
+    <h2 id="history-title">Riwayat</h2>
+    <button type="button" class="icon-btn" id="history-close" aria-label="Tutup"><svg class="ico"><use href="#i-x"/></svg></button>
+  </div>
+  <ul id="history-list" class="history-list"></ul>
+  <button type="button" class="btn btn-pink btn-sm" id="history-clear"><svg class="ico"><use href="#i-trash"/></svg><span>Hapus semua</span></button>
+</dialog>
+
+<script type="application/json" id="catalog-data"><%- JSON.stringify(catalog).replace(/</g, '\\u003c') %></script>
+<%- include('partials/footer') %>
