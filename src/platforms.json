@@ -1,0 +1,585 @@
+{
+ "regions": {
+  "id": {
+   "name": "Indonesia",
+   "flag": "🇮🇩"
+  },
+  "cn": {
+   "name": "China",
+   "flag": "🇨🇳"
+  },
+  "jp": {
+   "name": "Jepang",
+   "flag": "🇯🇵"
+  },
+  "sg": {
+   "name": "Singapura & Asia Tenggara",
+   "flag": "🇸🇬"
+  },
+  "us": {
+   "name": "Amerika Serikat",
+   "flag": "🇺🇸"
+  },
+  "global": {
+   "name": "Global",
+   "flag": "🌐"
+  }
+ },
+ "platforms": [
+  {
+   "id": "youtube",
+   "name": "YouTube",
+   "region": "us",
+   "domains": [
+    "youtube.com",
+    "youtu.be",
+    "youtube-nocookie.com"
+   ],
+   "color": "#FF0000",
+   "note": "Web: diblokir anti-bot YouTube untuk server cloud. Pakai aplikasi Android.",
+   "logo": "/logos/youtube.webp"
+  },
+  {
+   "id": "instagram",
+   "name": "Instagram",
+   "region": "us",
+   "domains": [
+    "instagram.com",
+    "instagr.am"
+   ],
+   "color": "#E1306C",
+   "note": "Reels & post publik",
+   "logo": "/logos/instagram.webp"
+  },
+  {
+   "id": "facebook",
+   "name": "Facebook",
+   "region": "us",
+   "domains": [
+    "facebook.com",
+    "fb.watch",
+    "fb.com"
+   ],
+   "color": "#1877F2",
+   "note": "Video & Reels publik",
+   "logo": "/logos/facebook.webp"
+  },
+  {
+   "id": "twitter",
+   "name": "X / Twitter",
+   "region": "us",
+   "domains": [
+    "twitter.com",
+    "x.com",
+    "t.co",
+    "fxtwitter.com",
+    "vxtwitter.com"
+   ],
+   "color": "#111111",
+   "note": null,
+   "logo": "/logos/twitter.webp"
+  },
+  {
+   "id": "threads",
+   "name": "Threads",
+   "region": "us",
+   "domains": [
+    "threads.net",
+    "threads.com"
+   ],
+   "color": "#111111",
+   "note": "Plugin DownloadIn",
+   "logo": "/logos/threads.webp"
+  },
+  {
+   "id": "reddit",
+   "name": "Reddit",
+   "region": "us",
+   "domains": [
+    "reddit.com",
+    "redd.it"
+   ],
+   "color": "#FF4500",
+   "note": "Web: kadang diblokir, pakai Android",
+   "logo": "/logos/reddit.webp"
+  },
+  {
+   "id": "pinterest",
+   "name": "Pinterest",
+   "region": "us",
+   "domains": [
+    "pinterest.com",
+    "pin.it"
+   ],
+   "color": "#E60023",
+   "note": null,
+   "logo": "/logos/pinterest.webp"
+  },
+  {
+   "id": "snapchat",
+   "name": "Snapchat",
+   "region": "us",
+   "domains": [
+    "snapchat.com"
+   ],
+   "color": "#FFFC00",
+   "note": "Spotlight",
+   "logo": "/logos/snapchat.webp"
+  },
+  {
+   "id": "twitch",
+   "name": "Twitch",
+   "region": "us",
+   "domains": [
+    "twitch.tv"
+   ],
+   "color": "#9146FF",
+   "note": "Clips & VOD",
+   "logo": "/logos/twitch.webp"
+  },
+  {
+   "id": "vimeo",
+   "name": "Vimeo",
+   "region": "us",
+   "domains": [
+    "vimeo.com"
+   ],
+   "color": "#1AB7EA",
+   "note": "Web: sering diblokir, pakai Android",
+   "logo": "/logos/vimeo.webp"
+  },
+  {
+   "id": "soundcloud",
+   "name": "SoundCloud",
+   "region": "us",
+   "domains": [
+    "soundcloud.com"
+   ],
+   "color": "#FF5500",
+   "note": "Audio",
+   "logo": "/logos/soundcloud.webp"
+  },
+  {
+   "id": "linkedin",
+   "name": "LinkedIn",
+   "region": "us",
+   "domains": [
+    "linkedin.com"
+   ],
+   "color": "#0A66C2",
+   "note": null,
+   "logo": "/logos/linkedin.webp"
+  },
+  {
+   "id": "bluesky",
+   "name": "Bluesky",
+   "region": "us",
+   "domains": [
+    "bsky.app"
+   ],
+   "color": "#1185FE",
+   "note": null,
+   "logo": "/logos/bluesky.webp"
+  },
+  {
+   "id": "tumblr",
+   "name": "Tumblr",
+   "region": "us",
+   "domains": [
+    "tumblr.com"
+   ],
+   "color": "#36465D",
+   "note": null,
+   "logo": "/logos/tumblr.webp"
+  },
+  {
+   "id": "rumble",
+   "name": "Rumble",
+   "region": "us",
+   "domains": [
+    "rumble.com"
+   ],
+   "color": "#85C742",
+   "note": null,
+   "logo": "/logos/rumble.webp"
+  },
+  {
+   "id": "imgur",
+   "name": "Imgur",
+   "region": "us",
+   "domains": [
+    "imgur.com"
+   ],
+   "color": "#1BB76E",
+   "note": null,
+   "logo": "/logos/imgur.webp"
+  },
+  {
+   "id": "tiktok",
+   "name": "TikTok",
+   "region": "global",
+   "domains": [
+    "tiktok.com"
+   ],
+   "color": "#FE2C55",
+   "note": "Tanpa watermark",
+   "logo": "/logos/tiktok.webp"
+  },
+  {
+   "id": "dailymotion",
+   "name": "Dailymotion",
+   "region": "global",
+   "domains": [
+    "dailymotion.com",
+    "dai.ly"
+   ],
+   "color": "#0066DC",
+   "note": null,
+   "logo": "/logos/dailymotion.webp"
+  },
+  {
+   "id": "kick",
+   "name": "Kick",
+   "region": "global",
+   "domains": [
+    "kick.com"
+   ],
+   "color": "#53FC18",
+   "note": "Clips & VOD",
+   "logo": "/logos/kick.webp"
+  },
+  {
+   "id": "9gag",
+   "name": "9GAG",
+   "region": "global",
+   "domains": [
+    "9gag.com"
+   ],
+   "color": "#222222",
+   "note": null,
+   "logo": "/logos/9gag.webp"
+  },
+  {
+   "id": "douyin",
+   "name": "Douyin 抖音",
+   "region": "cn",
+   "domains": [
+    "douyin.com",
+    "iesdouyin.com"
+   ],
+   "color": "#FE2C55",
+   "note": "Tanpa watermark. Web kadang ditolak (IP cloud), Android paling stabil.",
+   "logo": "/logos/douyin.webp"
+  },
+  {
+   "id": "kuaishou",
+   "name": "Kuaishou 快手",
+   "region": "cn",
+   "domains": [
+    "kuaishou.com",
+    "chenzhongtech.com",
+    "gifshow.com"
+   ],
+   "color": "#FF4906",
+   "note": "Plugin DownloadIn",
+   "logo": "/logos/kuaishou.webp"
+  },
+  {
+   "id": "bilibili",
+   "name": "Bilibili",
+   "region": "cn",
+   "domains": [
+    "bilibili.com",
+    "b23.tv",
+    "bilibili.tv"
+   ],
+   "color": "#00A1D6",
+   "note": "Web: sering diblokir dari server cloud. Paling stabil lewat aplikasi Android.",
+   "logo": "/logos/bilibili.webp"
+  },
+  {
+   "id": "xiaohongshu",
+   "name": "Xiaohongshu 小红书",
+   "region": "cn",
+   "domains": [
+    "xiaohongshu.com",
+    "xhslink.com"
+   ],
+   "color": "#FF2442",
+   "note": "Pakai link share asli (ada xsec_token)",
+   "logo": "/logos/xiaohongshu.webp"
+  },
+  {
+   "id": "weibo",
+   "name": "Weibo 微博",
+   "region": "cn",
+   "domains": [
+    "weibo.com",
+    "weibo.cn"
+   ],
+   "color": "#E6162D",
+   "note": null,
+   "logo": "/logos/weibo.webp"
+  },
+  {
+   "id": "youku",
+   "name": "Youku 优酷",
+   "region": "cn",
+   "domains": [
+    "youku.com"
+   ],
+   "color": "#1F9CFF",
+   "note": "Konten gratis",
+   "logo": "/logos/youku.webp"
+  },
+  {
+   "id": "vqq",
+   "name": "Tencent Video",
+   "region": "cn",
+   "domains": [
+    "v.qq.com"
+   ],
+   "color": "#FF6A00",
+   "note": "Konten gratis",
+   "logo": "/logos/vqq.webp"
+  },
+  {
+   "id": "zhihu",
+   "name": "Zhihu 知乎",
+   "region": "cn",
+   "domains": [
+    "zhihu.com"
+   ],
+   "color": "#0066FF",
+   "note": null,
+   "logo": "/logos/zhihu.webp"
+  },
+  {
+   "id": "acfun",
+   "name": "AcFun",
+   "region": "cn",
+   "domains": [
+    "acfun.cn"
+   ],
+   "color": "#FD4C5D",
+   "note": null,
+   "logo": "/logos/acfun.webp"
+  },
+  {
+   "id": "toutiao",
+   "name": "Toutiao 头条",
+   "region": "cn",
+   "domains": [
+    "toutiao.com"
+   ],
+   "color": "#F04142",
+   "note": null,
+   "logo": "/logos/toutiao.webp"
+  },
+  {
+   "id": "ixigua",
+   "name": "Xigua 西瓜视频",
+   "region": "cn",
+   "domains": [
+    "ixigua.com"
+   ],
+   "color": "#F04142",
+   "note": "Kadang butuh cookie",
+   "logo": "/logos/ixigua.webp"
+  },
+  {
+   "id": "netease",
+   "name": "NetEase Music",
+   "region": "cn",
+   "domains": [
+    "music.163.com"
+   ],
+   "color": "#C20C0C",
+   "note": "Audio",
+   "logo": "/logos/netease.webp"
+  },
+  {
+   "id": "huya",
+   "name": "Huya 虎牙",
+   "region": "cn",
+   "domains": [
+    "huya.com"
+   ],
+   "color": "#FF9600",
+   "note": null,
+   "logo": "/logos/huya.webp"
+  },
+  {
+   "id": "douyu",
+   "name": "Douyu 斗鱼",
+   "region": "cn",
+   "domains": [
+    "douyu.com",
+    "douyu.tv"
+   ],
+   "color": "#FF7700",
+   "note": null,
+   "logo": "/logos/douyu.webp"
+  },
+  {
+   "id": "pixiv",
+   "name": "pixiv",
+   "region": "jp",
+   "domains": [
+    "pixiv.net"
+   ],
+   "color": "#0096FA",
+   "note": "Ilustrasi & manga resolusi asli, ugoira jadi MP4/GIF",
+   "logo": "/logos/pixiv.webp"
+  },
+  {
+   "id": "niconico",
+   "name": "Niconico",
+   "region": "jp",
+   "domains": [
+    "nicovideo.jp",
+    "nico.ms"
+   ],
+   "color": "#252525",
+   "note": null,
+   "logo": "/logos/niconico.webp"
+  },
+  {
+   "id": "vidio",
+   "name": "Vidio",
+   "region": "id",
+   "domains": [
+    "vidio.com"
+   ],
+   "color": "#EE2B24",
+   "note": "Konten gratis (bukan premium/DRM)",
+   "logo": "/logos/vidio.webp"
+  },
+  {
+   "id": "snackvideo",
+   "name": "SnackVideo",
+   "region": "id",
+   "domains": [
+    "snackvideo.com",
+    "sck.io"
+   ],
+   "color": "#FFC400",
+   "note": "Via generic extractor",
+   "logo": "/logos/snackvideo.webp"
+  },
+  {
+   "id": "rctiplus",
+   "name": "RCTI+",
+   "region": "id",
+   "domains": [
+    "rctiplus.com"
+   ],
+   "color": "#1D4ED8",
+   "note": "Konten gratis",
+   "logo": "/logos/rctiplus.webp"
+  },
+  {
+   "id": "liputan6",
+   "name": "Liputan6",
+   "region": "id",
+   "domains": [
+    "liputan6.com"
+   ],
+   "color": "#F97316",
+   "note": null,
+   "logo": "/logos/liputan6.webp"
+  },
+  {
+   "id": "detik",
+   "name": "detikcom (20detik)",
+   "region": "id",
+   "domains": [
+    "detik.com"
+   ],
+   "color": "#1E3A8A",
+   "note": null,
+   "logo": "/logos/detik.webp"
+  },
+  {
+   "id": "kompas",
+   "name": "Kompas",
+   "region": "id",
+   "domains": [
+    "kompas.com",
+    "kompas.tv"
+   ],
+   "color": "#0F4C81",
+   "note": null,
+   "logo": "/logos/kompas.webp"
+  },
+  {
+   "id": "cnnindonesia",
+   "name": "CNN Indonesia",
+   "region": "id",
+   "domains": [
+    "cnnindonesia.com"
+   ],
+   "color": "#CC0000",
+   "note": null,
+   "logo": "/logos/cnnindonesia.webp"
+  },
+  {
+   "id": "likee",
+   "name": "Likee",
+   "region": "sg",
+   "domains": [
+    "likee.video",
+    "likee.com"
+   ],
+   "color": "#FF3C6E",
+   "note": "Tergantung yt-dlp",
+   "logo": "/logos/likee.webp"
+  },
+  {
+   "id": "bigo",
+   "name": "Bigo Live",
+   "region": "sg",
+   "domains": [
+    "bigo.tv"
+   ],
+   "color": "#00DDCC",
+   "note": "Live",
+   "logo": "/logos/bigo.webp"
+  },
+  {
+   "id": "mewatch",
+   "name": "meWATCH",
+   "region": "sg",
+   "domains": [
+    "mewatch.sg"
+   ],
+   "color": "#6A1B9A",
+   "note": "Konten gratis",
+   "logo": "/logos/mewatch.webp"
+  },
+  {
+   "id": "kwai",
+   "name": "Kwai",
+   "region": "sg",
+   "domains": [
+    "kwai.com"
+   ],
+   "color": "#FF7A00",
+   "note": "Via generic extractor",
+   "logo": "/logos/kwai.webp"
+  },
+  {
+   "id": "shopee",
+   "name": "Shopee Video",
+   "region": "sg",
+   "domains": [
+    "shopee.co.id",
+    "shopee.sg",
+    "shp.ee"
+   ],
+   "color": "#EE4D2D",
+   "note": "Eksperimental",
+   "logo": "/logos/shopee.webp"
+  }
+ ]
+}

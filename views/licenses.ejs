@@ -1,0 +1,26 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="main" class="wrap prose">
+  <h1>Lisensi &amp; kredit</h1>
+  <p><b>DownloadIn (KazamaDownloader)</b> dikembangkan oleh <b><%= app.org %></b> (developer: <b><%= app.dev %></b>) dan dirilis dengan lisensi <b>GPL-3.0-or-later</b>. Kode sumber lengkap ada di <a href="<%= app.repo %>" rel="noopener">GitHub</a>; teks lisensi ada di berkas <code>LICENSE</code> dan folder <code>licenses/</code>.</p>
+
+  <h2>Karya asal</h2>
+  <p>DownloadIn adalah karya turunan; karya asalnya Copyright &copy; 2026 XyVerse, GPL-3.0-or-later. Sesuai ketentuan GPL, pemberitahuan hak cipta karya asal tetap dipertahankan. Perubahan oleh <%= app.org %>: penulisan ulang backend ke Node.js + Express, tampilan EJS Neo-Brutalism, aplikasi Android dengan nama dan identitas baru, serta penghapusan layanan analitik dan push notification milik pihak lain.</p>
+
+  <h2>Komponen open source</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Komponen</th><th>Lisensi</th><th>Hak cipta</th></tr></thead>
+    <tbody>
+      <% web.forEach(function (c) { %>
+      <tr><td><a href="<%= c.url %>" rel="noopener"><%= c.name %></a></td><td><%= c.license %></td><td><%= c.copyright %></td></tr>
+      <% }) %>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Merek dagang</h2>
+  <p><%= trademarks %></p>
+  <p><a class="btn btn-yellow" href="/"><span>Kembali ke beranda</span></a></p>
+</main>
+<%- include('partials/footer') %>

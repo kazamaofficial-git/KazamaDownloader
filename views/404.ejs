@@ -1,0 +1,9 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="main" class="wrap notfound">
+  <p class="big404"><%= typeof error !== 'undefined' ? '500' : '404' %></p>
+  <h1><%= typeof error !== 'undefined' ? 'Server sedang bermasalah' : 'Halaman tidak ditemukan' %></h1>
+  <p class="lead">Link yang kamu buka tidak ada atau sudah dipindah. Kembali ke beranda dan tempel link videonya lagi.</p>
+  <a class="btn btn-yellow btn-lg" href="/"><span>Ke beranda</span></a>
+</main>
+<%- include('partials/footer') %>

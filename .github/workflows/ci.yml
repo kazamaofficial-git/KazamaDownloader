@@ -1,0 +1,35 @@
+name: Web CI
+
+# Tes unit website (Node.js). Build APK ada di android.yml.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['android/**', '*.md']
+  pull_request:
+    paths-ignore: ['android/**', '*.md']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tes (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - name: Server bisa start
+        run: |
+          SIGNING_KEY=ci node server.js &
+          sleep 3
+          curl -fsS http://localhost:3000/ | grep -q "DownloadIn"
+          curl -fsS http://localhost:3000/lisensi | grep -q "KazamaTech"
+          curl -fsS http://localhost:3000/api/platforms | grep -q "TikTok"
