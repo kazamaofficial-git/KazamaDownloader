@@ -1,0 +1,21 @@
+name: Brand guard
+
+# Memeriksa keutuhan lisensi, atribusi, dan identitas resmi pada setiap push/PR.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/brand-guard.js

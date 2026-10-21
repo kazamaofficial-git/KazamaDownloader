@@ -1,0 +1,127 @@
+package com.kazamatech.dlin
+
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import com.kazamatech.dlin.ui.TamperScreen
+import android.net.Uri
+import com.kazamatech.dlin.ui.OnboardingScreen
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.kazamatech.dlin.ui.KazamaRoot
+import com.kazamatech.dlin.ui.KazamaTheme
+import kotlinx.coroutines.launch
+
+class MainActivity : ComponentActivity() {
+    private val vm: MainViewModel by viewModels()
+
+    private val askPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge(
+            statusBarStyle = androidx.activity.SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
+            navigationBarStyle = androidx.activity.SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
+        )
+        // Gerbang anti bajak: APK resmi yang ditandatangani ulang pihak lain tidak dijalankan
+        if (Integrity.status(this) == Integrity.Status.UNOFFICIAL) {
+            setContent {
+                KazamaTheme {
+                    TamperScreen(
+                        onOpenOfficial = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.WEB_URL))) },
+                        onClose = { finishAffinity() },
+                    )
+                }
+            }
+            return
+        }
+        if (savedInstanceState == null) handleIntent(intent)
+        // Pengguna baru: layar sambutan dulu; izin diminta setelah "Mulai"
+        if (AppSettings.onboarded(this)) requestNeededPermissions()
+        watchFirstDownload()
+        setContent {
+            KazamaTheme {
+                var onboarded by remember { mutableStateOf(AppSettings.onboarded(this@MainActivity)) }
+                if (!onboarded) {
+                    OnboardingScreen {
+                        AppSettings.setOnboarded(this@MainActivity, true)
+                        onboarded = true
+                        requestNeededPermissions()
+                    }
+                } else {
+                    KazamaRoot(vm)
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent == null) return
+        if (intent.action == Intent.ACTION_SEND) {
+            val text = intent.getStringExtra(Intent.EXTRA_TEXT) ?: intent.getStringExtra(Intent.EXTRA_SUBJECT)
+            vm.onShared(text)
+        } else {
+            if (intent.hasExtra("tab")) vm.tab = intent.getIntExtra("tab", 0)
+            intent.getStringExtra("open_uri")?.let { uri ->
+                vm.openLocal(uri, intent.getStringExtra("open_mime"), intent.getStringExtra("open_title") ?: "File")
+            }
+            if (intent.getStringExtra("screen") == "update") vm.screen = Screen.Update
+        }
+    }
+
+    private fun requestNeededPermissions() {
+        // POST_NOTIFICATIONS sengaja TIDAK diminta di awal — user baru diminta
+        // setelah unduhan pertamanya selesai (lihat watchFirstDownload).
+        if (Build.VERSION.SDK_INT <= 28 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        ) {
+            askPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
+    /**
+     * Izin notifikasi diminta tepat saat nilainya jelas: begitu unduhan pertama
+     * selesai (notifikasi "Download selesai" baru ada gunanya). Diminta sekali
+     * saja — kalau ditolak, tidak diganggu lagi.
+     */
+    private fun watchFirstDownload() {
+        if (Build.VERSION.SDK_INT < 33) return
+        Downloads.load(this)
+        lifecycleScope.launch {
+            var awal: Set<String>? = null   // baseline: riwayat lama bukan "unduhan pertama"
+            Downloads.records.collect { list ->
+                val selesai = list.filter { it.status == DlRecord.STATUS_DONE }.map { it.id }.toSet()
+                val baseline = awal
+                if (baseline == null) { awal = selesai; return@collect }
+                val baru = selesai - baseline
+                if (baru.isNotEmpty() && !AppSettings.notificationAsked(this@MainActivity)) {
+                    AppSettings.setNotificationAsked(this@MainActivity, true)
+                    if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        askPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+            }
+        }
+    }
+}

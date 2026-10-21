@@ -1,0 +1,9 @@
+# Semua perubahan wajib ditinjau pemilik resmi (aktifkan "Require review from Code Owners" di branch protection).
+*                       @kazamaofficial-git
+/LICENSE                @kazamaofficial-git
+/TRADEMARK.md           @kazamaofficial-git
+/licenses/              @kazamaofficial-git
+/scripts/brand-guard.*  @kazamaofficial-git
+/.github/               @kazamaofficial-git
+/public/img/            @kazamaofficial-git
+/android/app/src/main/res/drawable-nodpi/ @kazamaofficial-git
