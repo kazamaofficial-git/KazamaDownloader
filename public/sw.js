@@ -1,6 +1,6 @@
 /* DownloadIn — service worker minimal. Hanya menyimpan cangkang halaman statis; API tidak pernah di-cache. */
-const CACHE = 'downloadin-shell-v1';
-const SHELL = ['/css/style.css', '/js/app.js', '/img/logo.svg'];
+const CACHE = 'downloadin-shell-v2';
+const SHELL = ['/css/style.css', '/js/app.js', '/js/theme.js', '/img/logo.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
