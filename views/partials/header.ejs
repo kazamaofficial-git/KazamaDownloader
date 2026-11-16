@@ -1,18 +1,27 @@
-<header class="top">
-  <div class="wrap top-in">
-    <a class="brand" href="/" aria-label="DownloadIn — beranda">
-      <img src="/img/logo.svg" width="44" height="44" alt="">
-      <span class="brand-name">DownloadIn</span>
+<header class="kazama-header">
+  <div class="kazama-wrap kazama-header__inner">
+    <a class="kazama-brand" href="/" aria-label="DownloadIn — beranda">
+      <img src="/img/logo.svg" width="40" height="40" alt="">
+      <span class="kazama-brand__name">DownloadIn</span>
     </a>
-    <nav class="nav" aria-label="Menu utama">
+    <nav class="kazama-nav" aria-label="Menu utama">
+      <a href="/#kazama-hero">Unduh</a>
+      <a href="/#tutorial">Tutorial</a>
       <a href="/#platforms">Platform</a>
-      <a href="/#how">Cara kerja</a>
-      <a href="/#android">Android</a>
-      <a href="/#donasi">Donasi</a>
+      <a href="/#aplikasi">Aplikasi</a>
       <a href="/#faq">FAQ</a>
     </nav>
-    <button type="button" class="btn btn-white btn-sm" id="btn-history" aria-haspopup="dialog">
-      <svg class="ico"><use href="#i-history"/></svg><span>Riwayat</span>
-    </button>
+    <div class="kazama-header__actions">
+      <button type="button" class="kazama-btn kazama-btn--ghost kazama-btn--small" id="kazama-install" hidden>
+        <svg class="kazama-icon" aria-hidden="true"><use href="#i-monitor"/></svg><span>Pasang aplikasi</span>
+      </button>
+      <button type="button" class="kazama-btn kazama-btn--ghost kazama-btn--small" id="kazama-history-btn" aria-haspopup="dialog">
+        <svg class="kazama-icon" aria-hidden="true"><use href="#i-history"/></svg><span>Riwayat</span>
+      </button>
+      <button type="button" class="kazama-icon-btn" id="kazama-theme-toggle" aria-label="Ganti tema terang/gelap" aria-pressed="false">
+        <svg class="kazama-icon kazama-theme-icon kazama-theme-icon--sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="kazama-icon kazama-theme-icon kazama-theme-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+    </div>
   </div>
 </header>
