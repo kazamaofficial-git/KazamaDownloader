@@ -75,6 +75,20 @@ struct SettingsView: View {
                     .neoBox(fill: .white)
                     .onAppear { Notifier.authorized { notifAllowed = $0 } }
 
+                    Link(destination: URL(string: "https://youtu.be/xxy4yc4D1bk")!) {
+                        HStack(spacing: 10) {
+                            Image(systemName: "play.rectangle.fill")
+                            Text("Video tutorial DownloadIn")
+                            Spacer()
+                            Image(systemName: "arrow.up.right")
+                        }
+                        .font(.system(size: 15, weight: .heavy))
+                        .foregroundColor(Neo.ink)
+                        .padding(16)
+                        .frame(maxWidth: .infinity)
+                        .neoBox(fill: Neo.lime)
+                    }
+
                     VStack(alignment: .leading, spacing: 8) {
                         Image("KazamaTech").resizable().scaledToFit().frame(height: 90)
                         Text("Tentang").font(.system(size: 16, weight: .heavy))
