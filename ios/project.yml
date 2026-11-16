@@ -6,7 +6,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "1.3.0"
+    MARKETING_VERSION: "1.3.5"
     CURRENT_PROJECT_VERSION: "1"
 targets:
   DownloadIn:
@@ -52,4 +52,4 @@ targets:
         DEVELOPMENT_TEAM: ""
         PROVISIONING_PROFILE_SPECIFIER: ""
         ENABLE_BITCODE: "NO"
-        KD_VERSION_LABEL: "1.3.0.Hotfix"
+        KD_VERSION_LABEL: "1.3.5"
