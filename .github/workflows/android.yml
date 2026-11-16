@@ -44,7 +44,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BASE_VERSION: '1.3.0.Hotfix'
+  BASE_VERSION: '1.3.5'
   NDK_VERSION: '27.2.12479018'
 
 jobs:
@@ -170,12 +170,28 @@ jobs:
       - name: Rapikan nama file & cek isi APK
         run: |
           mkdir -p out
-          for f in android/app/build/outputs/apk/release/*.apk; do
-            abi=$(basename "$f" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
-            cp "$f" "out/DownloadIn-${VERSION_NAME}-${abi}.apk"
-          done
+          # SATU APK untuk semua HP ARM: 64-bit (arm64-v8a) + 32-bit (armeabi-v7a)
+          APK=$(ls android/app/build/outputs/apk/release/*.apk | head -1)
+          cp "$APK" "out/DownloadIn-${VERSION_NAME}-universal.apk"
           python3 .github/scripts/check_apk.py out android/app/build/dl-jni android/app/build/dl-res/raw/ytdlp
           cp android/release-banner.webp out/update-banner.webp
+
+      - name: Build APK x86_64 untuk smoke test emulator (tidak dirilis)
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease -PkazamaAbis=x86_64 --no-daemon --stacktrace
+          mkdir -p ../smoke
+          cp "$(ls app/build/outputs/apk/release/*.apk | head -1)" "../smoke/DownloadIn-${VERSION_NAME}-smoke-x86_64.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DownloadIn-${{ env.VERSION_NAME }}-smoke
+          path: smoke/*.apk
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         with:
@@ -210,7 +226,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: DownloadIn-${{ needs.build.outputs.version }}
+          name: DownloadIn-${{ needs.build.outputs.version }}-smoke
           path: apk
 
       - name: Aktifkan KVM
