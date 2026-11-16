@@ -1,43 +1,61 @@
-<%- include('partials/head') %>
+<%- include('partials/head', { canonicalPath: '/' }) %>
 <%- include('partials/header') %>
 
 <main id="main">
-  <section class="hero wrap">
-    <div class="hero-copy">
-      <h1>Tempel link.<br>Unduh filenya.</h1>
-      <p class="lead">Video tanpa watermark, MP3, foto slide dan Live Photo dari TikTok, Instagram, X, Bilibili, pixiv dan 1.700+ situs lain. Gratis, tanpa akun.</p>
-      <span class="sticker" aria-hidden="true">1.700+<br>situs</span>
+  <section id="kazama-hero" class="kazama-hero kazama-wrap">
+    <div class="kazama-hero__copy">
+      <p class="kazama-tag">1.700+ situs · tanpa watermark · gratis</p>
+      <h1 class="kazama-hero__title">Tempel link.<br><span class="kazama-accent">Unduh filenya.</span></h1>
+      <p class="kazama-lead">Video, MP3, foto slide, dan Live Photo dari TikTok, Instagram, X, YouTube, Bilibili, pixiv, dan situs lainnya. Tanpa akun, tanpa instal.</p>
     </div>
 
-    <form id="form" class="slab" autocomplete="off" novalidate>
-      <label class="sr" for="url">Link video atau postingan</label>
-      <div class="slab-field">
-        <svg class="ico" aria-hidden="true"><use href="#i-link"/></svg>
-        <input id="url" name="url" type="text" inputmode="url" spellcheck="false" enterkeyhint="go" placeholder="Tempel link video, postingan, atau karya">
-        <button type="button" id="clear" class="icon-btn hidden" aria-label="Hapus isi"><svg class="ico"><use href="#i-x"/></svg></button>
-        <button type="button" id="paste" class="btn btn-white btn-sm"><svg class="ico" aria-hidden="true"><use href="#i-clipboard"/></svg><span>Tempel</span></button>
+    <form id="kazama-form" class="kazama-panel" autocomplete="off" novalidate>
+      <label class="kazama-sr" for="kazama-url">Link video atau postingan</label>
+      <div class="kazama-field">
+        <svg class="kazama-icon" aria-hidden="true"><use href="#i-link"/></svg>
+        <input id="kazama-url" name="url" type="text" inputmode="url" spellcheck="false" enterkeyhint="go" placeholder="Tempel link video, postingan, atau karya">
+        <button type="button" id="kazama-clear" class="kazama-icon-btn kazama-icon-btn--small" aria-label="Hapus isi" hidden><svg class="kazama-icon"><use href="#i-x"/></svg></button>
+        <button type="button" id="kazama-paste" class="kazama-btn kazama-btn--ghost kazama-btn--small"><svg class="kazama-icon" aria-hidden="true"><use href="#i-clipboard"/></svg><span>Tempel</span></button>
       </div>
-      <button type="submit" id="go" class="btn btn-yellow btn-lg">
-        <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span id="go-label">Ambil file</span>
+      <button type="submit" id="kazama-go" class="kazama-btn kazama-btn--primary kazama-btn--large">
+        <svg class="kazama-icon" aria-hidden="true"><use href="#i-download"/></svg><span id="kazama-go-label">Ambil file</span>
       </button>
     </form>
-    <p id="detected" class="detected" aria-live="polite"></p>
+    <p id="kazama-detected" class="kazama-detected" aria-live="polite"></p>
   </section>
 
-  <section id="result" class="wrap result hidden" aria-live="polite" aria-label="Hasil"></section>
+  <section id="kazama-result" class="kazama-wrap kazama-result" aria-live="polite" aria-label="Hasil" hidden></section>
 
-  <section id="platforms" class="wrap block">
+  <section id="tutorial" class="kazama-wrap kazama-section">
+    <div class="kazama-split">
+      <div class="kazama-split__text">
+        <p class="kazama-index">01</p>
+        <h2>Video tutorial</h2>
+        <p class="kazama-muted">Lihat cara memakai DownloadIn dari awal: menempel link, memilih kualitas, sampai file tersimpan.</p>
+        <p><a class="kazama-btn kazama-btn--ghost" href="<%= app.tutorialUrl %>" target="_blank" rel="noopener"><svg class="kazama-icon" aria-hidden="true"><use href="#i-play"/></svg><span>Tonton di YouTube</span></a></p>
+      </div>
+      <div class="kazama-video">
+        <button type="button" id="kazama-tutorial-player" class="kazama-video__poster" data-video-id="<%= app.tutorialId %>" aria-label="Putar video tutorial DownloadIn">
+          <img src="https://i.ytimg.com/vi/<%= app.tutorialId %>/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+          <span class="kazama-video__play" aria-hidden="true"><svg class="kazama-icon"><use href="#i-play"/></svg></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms" class="kazama-wrap kazama-section">
+    <p class="kazama-index">02</p>
     <h2>Platform yang didukung</h2>
-    <p class="block-sub"><%= catalog.total_featured %> platform unggulan di bawah ini, ditambah situs lain yang dikenali yt-dlp. Link dari situs di luar daftar tetap dicoba.</p>
-    <% catalog.regions.forEach(function (r) { %>
-      <% if (r.platforms.length) { %>
-      <div class="region">
-        <h3><span aria-hidden="true"><%= r.flag %></span> <%= r.name %></h3>
-        <ul class="tiles">
-          <% r.platforms.forEach(function (p) { %>
-          <li class="tile" style="--brand: <%= p.color %>" <% if (p.note) { %>title="<%= p.note %>"<% } %>>
-            <img src="<%= p.logo %>" width="28" height="28" alt="" loading="lazy">
-            <span><%= p.name %></span>
+    <p class="kazama-muted"><%= catalog.total_featured %> platform unggulan di bawah ini, ditambah situs lain yang dikenali yt-dlp. Link dari situs di luar daftar tetap dicoba.</p>
+    <% catalog.regions.forEach(function (region) { %>
+      <% if (region.platforms.length) { %>
+      <div class="kazama-region">
+        <h3><span aria-hidden="true"><%= region.flag %></span> <%= region.name %></h3>
+        <ul class="kazama-tiles">
+          <% region.platforms.forEach(function (platform) { %>
+          <li class="kazama-tile" style="--kazama-brand: <%= platform.color %>" <% if (platform.note) { %>title="<%= platform.note %>"<% } %>>
+            <img src="<%= platform.logo %>" width="28" height="28" alt="" loading="lazy">
+            <span><%= platform.name %></span>
           </li>
           <% }) %>
         </ul>
@@ -46,81 +64,77 @@
     <% }) %>
   </section>
 
-  <section id="how" class="wrap block">
+  <section id="how" class="kazama-wrap kazama-section">
+    <p class="kazama-index">03</p>
     <h2>Cara kerja</h2>
-    <ol class="steps">
-      <li class="step step-1">
-        <b>Salin link</b>
-        <p>Buka postingan atau video di aplikasinya, lalu pilih Bagikan &rarr; Salin link.</p>
-      </li>
-      <li class="step step-2">
-        <b>Tempel di sini</b>
-        <p>Tempel ke kolom di atas dan tekan Ambil file. Teks share yang panjang juga boleh, linknya diambil otomatis.</p>
-      </li>
-      <li class="step step-3">
-        <b>Pilih kualitas</b>
-        <p>Pilih resolusi video, MP3 atau foto yang kamu mau. File langsung terunduh ke perangkatmu.</p>
-      </li>
+    <ol class="kazama-steps">
+      <li class="kazama-step"><b>Salin link</b><p>Buka postingan atau video di aplikasinya, lalu pilih Bagikan &rarr; Salin link.</p></li>
+      <li class="kazama-step"><b>Tempel di sini</b><p>Tempel ke kolom di atas dan tekan Ambil file. Teks share yang panjang juga boleh, linknya diambil otomatis.</p></li>
+      <li class="kazama-step"><b>Pilih kualitas</b><p>Pilih resolusi video, MP3, atau foto yang kamu mau. File langsung terunduh ke perangkatmu.</p></li>
     </ol>
   </section>
 
-  <section id="android" class="wrap block">
-    <h2>Aplikasi untuk HP</h2>
-    <div class="apps">
-      <div class="promo promo-android">
+  <section id="aplikasi" class="kazama-wrap kazama-section">
+    <p class="kazama-index">04</p>
+    <h2>Aplikasi</h2>
+    <div class="kazama-apps">
+      <article class="kazama-card kazama-card--pad kazama-card--accent">
         <h3>Android</h3>
-        <p>yt-dlp dan FFmpeg berjalan di dalam aplikasi, jadi tidak butuh server. Pratinjau video, galeri foto, riwayat unduhan, dan pembaruan otomatis. Tampilannya sama dengan website ini.</p>
-        <p class="promo-actions">
-          <a class="btn btn-lime btn-lg" id="apk-btn" href="/download/android"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Unduh APK</span></a>
+        <p class="kazama-muted">Satu APK untuk semua HP ARM (64-bit dan 32-bit). yt-dlp dan FFmpeg berjalan di dalam aplikasi, ada pemutar bawaan, riwayat unduhan, dan pembaruan langsung dari aplikasi.</p>
+        <p class="kazama-actions">
+          <a class="kazama-btn kazama-btn--primary kazama-btn--large" id="kazama-apk-btn" href="/download/android"><svg class="kazama-icon" aria-hidden="true"><use href="#i-download"/></svg><span>Unduh APK</span></a>
         </p>
-        <p class="apk-info" id="apk-info">Mengecek versi terbaru…</p>
-        <p class="apk-abis hidden" id="apk-abis"></p>
-      </div>
-      <div class="promo promo-ios">
+        <p class="kazama-mono" id="kazama-apk-info">Mengecek versi terbaru…</p>
+      </article>
+      <article class="kazama-card kazama-card--pad">
         <h3>iPhone &amp; iPad</h3>
-        <p>Pasang sebagai aplikasi web langsung dari Safari (tanpa App Store), pakai Shortcut untuk menyimpan ke Foto, atau pasang aplikasi iOS-nya.</p>
-        <p class="promo-actions">
-          <a class="btn btn-cyan btn-lg" href="/ios"><svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg><span>Cara pasang di iOS</span></a>
-        </p>
-      </div>
+        <p class="kazama-muted">Aplikasi iOS dengan tampilan yang sama, dipasang lewat sideload.</p>
+        <p class="kazama-actions"><a class="kazama-btn kazama-btn--ghost kazama-btn--large" href="/ios"><svg class="kazama-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg><span>Unduh aplikasi iOS</span></a></p>
+      </article>
+      <article class="kazama-card kazama-card--pad">
+        <h3>Windows, macOS, Linux</h3>
+        <p class="kazama-muted">Pasang website ini sebagai aplikasi di komputermu (PWA) lewat tombol <b>Pasang aplikasi</b> di atas atau menu <i>Install</i> di browser. Terbuka di jendelanya sendiri tanpa tab.</p>
+      </article>
     </div>
   </section>
 
-  <section id="donasi" class="wrap block">
-    <div class="promo promo-donate">
-      <div class="donate-copy">
+  <section id="donasi" class="kazama-wrap kazama-section">
+    <div class="kazama-card kazama-card--pad kazama-donate">
+      <div class="kazama-donate__copy">
         <h2>Dukung DownloadIn</h2>
-        <p>DownloadIn gratis dan tanpa iklan. Biaya server dan waktu pengembangan ditanggung <%= app.org %>. Kalau terbantu, kamu bisa donasi lewat <b>QRIS</b> — bisa dibayar dari semua e-wallet dan m-banking. Berapa pun sangat berarti.</p>
-        <p class="donate-note">Donasi bersifat sukarela dan tidak membuka fitur tambahan.</p>
-        <a class="btn btn-yellow" href="<%= app.qris %>" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span>Buka QRIS ukuran penuh</span></a>
+        <p class="kazama-muted">DownloadIn gratis dan tanpa iklan. Biaya server dan waktu pengembangan ditanggung <%= app.org %>. Kalau terbantu, kamu bisa donasi lewat <b>QRIS</b>, bisa dibayar dari semua e-wallet dan m-banking.</p>
+        <p class="kazama-muted">Donasi bersifat sukarela dan tidak membuka fitur tambahan.</p>
+        <a class="kazama-btn kazama-btn--primary" href="<%= app.qris %>" target="_blank" rel="noopener"><svg class="kazama-icon" aria-hidden="true"><use href="#i-heart"/></svg><span>Buka QRIS ukuran penuh</span></a>
       </div>
-      <a class="qris" href="<%= app.qris %>" target="_blank" rel="noopener" aria-label="Buka gambar QRIS donasi">
-        <img src="<%= app.qris %>" alt="Kode QRIS untuk donasi ke KazamaTech" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+      <a class="kazama-qris" href="<%= app.qris %>" target="_blank" rel="noopener" aria-label="Buka gambar QRIS donasi">
+        <img src="<%= app.qris %>" alt="Kode QRIS untuk donasi ke KazamaTech" width="260" height="260" loading="lazy" referrerpolicy="no-referrer">
       </a>
     </div>
   </section>
 
-  <section id="faq" class="wrap block">
+  <section id="faq" class="kazama-wrap kazama-section">
+    <p class="kazama-index">05</p>
     <h2>FAQ</h2>
-    <div class="faq">
-      <details><summary>Gratis? Ada batasan?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Gratis. Supaya adil, ada batas wajar jumlah permintaan per menit untuk tiap pengguna.</p></details>
-      <details><summary>Kenapa YouTube atau Bilibili kadang gagal?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Beberapa platform memblokir IP server (datacenter) dengan cek anti-bot. Kalau gagal, coba lagi beberapa saat kemudian. Pemilik server bisa memasang proxy atau cookies untuk meningkatkan keberhasilannya.</p></details>
-      <details><summary>Bisa ambil foto slide dan Live Photo?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Bisa untuk TikTok (mode foto), Douyin, Xiaohongshu, Kuaishou, X, Instagram, Threads, Bluesky dan Weibo. Semua foto tampil dalam galeri, dan kamu bisa mengunduhnya satu per satu atau sekaligus.</p></details>
-      <details><summary>Ada versi Android?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Ada. Tekan Unduh APK di bagian Aplikasi untuk HP, langsung terunduh dari website ini tanpa membuka GitHub. Aplikasinya bisa memperbarui dirinya sendiri. Untuk iPhone/iPad, lihat halaman iOS.</p></details>
-      <details><summary>Konten privat atau premium?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Tidak didukung. DownloadIn hanya mengambil konten publik. Konten berbayar atau berDRM tidak bisa diunduh.</p></details>
-      <details><summary>Apakah file saya disimpan di server?<svg class="ico chev"><use href="#i-chevron"/></svg></summary><p>Tidak. File gabungan (video + audio atau MP3) dibuat sementara di server hanya selama proses unduhan, lalu langsung dihapus.</p></details>
+    <div class="kazama-faq">
+      <details><summary>Gratis? Ada batasan?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Gratis. Supaya adil, ada batas wajar jumlah permintaan per menit untuk tiap pengguna.</p></details>
+      <details><summary>Kenapa YouTube atau Bilibili kadang gagal?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Beberapa platform memblokir IP server (datacenter) dengan cek anti-bot. Kalau gagal, coba lagi beberapa saat kemudian.</p></details>
+      <details><summary>Bisa ambil foto slide dan Live Photo?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Bisa untuk TikTok (mode foto), Douyin, Xiaohongshu, Kuaishou, X, Instagram, Threads, Bluesky dan Weibo. Semua foto tampil dalam galeri, dan kamu bisa mengunduhnya satu per satu atau sekaligus.</p></details>
+      <details><summary>Ada versi Android dan iOS?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Ada. Tekan Unduh APK di bagian Aplikasi untuk Android (satu APK untuk semua HP ARM, langsung dari website ini). Untuk iPhone/iPad, buka halaman aplikasi iOS. Aplikasi akan memberi tahu dan mewajibkan pembaruan saat versi baru tersedia.</p></details>
+      <details><summary>Bisa dipasang di komputer?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Bisa. Di Windows, macOS, atau Linux, pasang website ini sebagai aplikasi (PWA) lewat tombol Pasang aplikasi atau menu Install di browser berbasis Chromium.</p></details>
+      <details><summary>Konten privat atau premium?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Tidak didukung. DownloadIn hanya mengambil konten publik. Konten berbayar atau berDRM tidak bisa diunduh.</p></details>
+      <details><summary>Apakah file saya disimpan di server?<svg class="kazama-icon kazama-chevron"><use href="#i-chevron"/></svg></summary><p>Tidak. File gabungan (video + audio atau MP3) dibuat sementara di server hanya selama proses unduhan, lalu langsung dihapus.</p></details>
     </div>
   </section>
 </main>
 
-<dialog id="history-dialog" aria-labelledby="history-title">
-  <div class="dlg-head">
-    <h2 id="history-title">Riwayat</h2>
-    <button type="button" class="icon-btn" id="history-close" aria-label="Tutup"><svg class="ico"><use href="#i-x"/></svg></button>
+<dialog id="kazama-history-dialog" class="kazama-dialog" aria-labelledby="kazama-history-title">
+  <div class="kazama-dialog__head">
+    <h2 id="kazama-history-title">Riwayat</h2>
+    <button type="button" class="kazama-icon-btn kazama-icon-btn--small" id="kazama-history-close" aria-label="Tutup"><svg class="kazama-icon"><use href="#i-x"/></svg></button>
   </div>
-  <ul id="history-list" class="history-list"></ul>
-  <button type="button" class="btn btn-pink btn-sm" id="history-clear"><svg class="ico"><use href="#i-trash"/></svg><span>Hapus semua</span></button>
+  <ul id="kazama-history-list" class="kazama-history"></ul>
+  <button type="button" class="kazama-btn kazama-btn--ghost kazama-btn--small" id="kazama-history-clear"><svg class="kazama-icon"><use href="#i-trash"/></svg><span>Hapus semua</span></button>
 </dialog>
 
-<script type="application/json" id="catalog-data"><%- JSON.stringify(catalog).replace(/</g, '\\u003c') %></script>
+<script type="application/json" id="kazama-catalog-data"><%- JSON.stringify(catalog).replace(/</g, '\\u003c') %></script>
 <%- include('partials/footer') %>
