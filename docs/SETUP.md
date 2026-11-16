@@ -69,7 +69,7 @@ api/index.js             entry Vercel Serverless Function
 vercel.json              konfigurasi Vercel
 src/                     config, engine (yt-dlp), downloader, security, signer, binaries, releases, routes
 views/                   template EJS (beranda, iOS, lisensi, 404)
-public/                  CSS, JS, logo platform, PWA (manifest + service worker)
+public/                  CSS (tema terang/gelap), JS, logo platform, PWA (manifest + service worker)
 plugins/                 plugin extractor yt-dlp (dipakai web dan Android)
 android/                 aplikasi Android (Kotlin + Compose)
 ios/                     aplikasi iOS (SwiftUI + XcodeGen)
