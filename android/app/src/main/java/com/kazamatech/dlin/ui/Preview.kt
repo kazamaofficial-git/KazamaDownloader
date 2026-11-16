@@ -53,6 +53,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -311,53 +312,109 @@ fun GalleryViewer(
     }
 }
 
-/** Pemutar bawaan untuk file hasil unduhan (video, audio, foto) — tanpa membuka aplikasi lain. */
+/** Pemutar bawaan untuk file hasil unduhan: foto, video (antrean), dan audio (pemutar musik tersendiri). */
 @Composable
-fun LocalMediaDialog(item: ViewerItem, onDismiss: () -> Unit) {
+fun KazamaMediaViewerDialog(item: ViewerItem, onDismiss: () -> Unit) {
     val mime = item.mime.orEmpty()
+    val queue = item.queue.ifEmpty { listOf(item) }
     if (mime.startsWith("audio/")) {
-        AudioPlayerDialog(item, onDismiss) // audio punya pemutar musik sendiri, berbeda dari pemutar video
+        KazamaAudioPlayerDialog(queue, item.index, onDismiss)
         return
     }
+    var current by remember(item) { mutableStateOf(queue.getOrElse(item.index) { item }) }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
         Box(Modifier.fillMaxSize().background(Color.Black)) {
             val body = Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(top = 56.dp)
             if (mime.startsWith("image/")) {
                 AsyncImage(model = item.uri, contentDescription = item.title, contentScale = ContentScale.Fit, modifier = body)
             } else {
-                VideoPlayer(PlaySpec(HttpSource(item.uri, emptyMap(), null)), body)
+                KazamaPlaylistVideoPlayer(queue, item.index, { current = queue[it] }, body)
             }
-            DialogTopBar(item.title, if (mime.startsWith("audio/")) "Memutar audio" else "Pemutar DownloadIn", onDismiss)
-            val ctx = LocalContext.current
+            val position = if (queue.size > 1) "Video ${queue.indexOf(current) + 1} dari ${queue.size}" else "Pemutar DownloadIn"
+            DialogTopBar(current.title, position, onDismiss)
+            val context = LocalContext.current
             Box(Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(top = 64.dp, end = 12.dp)) {
                 SmallAction("Bagikan", R.drawable.ic_share) {
-                    try { ctx.startActivity(com.kazamatech.dlin.Downloads.shareIntent(android.net.Uri.parse(item.uri), item.mime)) } catch (_: Exception) { }
+                    try { context.startActivity(com.kazamatech.dlin.Downloads.shareIntent(android.net.Uri.parse(current.uri), current.mime)) } catch (_: Exception) { }
                 }
             }
         }
     }
 }
 
-private fun fmtTime(ms: Long): String {
-    val s = (ms / 1000).coerceAtLeast(0)
-    return "%d:%02d".format(s / 60, s % 60)
+private fun kazamaMediaItems(queue: List<ViewerItem>): List<MediaItem> = queue.map { entry ->
+    MediaItem.Builder()
+        .setUri(entry.uri)
+        .setMediaMetadata(MediaMetadata.Builder().setTitle(entry.title).build())
+        .build()
 }
 
-/** Pemutar musik: sampul, penggeser posisi, putar/jeda, mundur/maju 10 detik. Terpisah dari pemutar video. */
+/**
+ * Pemutar video lokal dengan antrean. Tombol panah kiri/kanan = video sebelumnya/berikutnya
+ * (bukan mundur/maju durasi; tombol putar-cepat bawaan sengaja disembunyikan, gunakan bilah posisi untuk menggeser).
+ */
+@androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 @Composable
-fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
+fun KazamaPlaylistVideoPlayer(queue: List<ViewerItem>, startIndex: Int, onIndexChange: (Int) -> Unit, modifier: Modifier) {
+    val context = LocalContext.current
+    val player = remember { ExoPlayer.Builder(context).build() }
+    DisposableEffect(Unit) { onDispose { player.release() } }
+    LaunchedEffect(queue) {
+        player.setMediaItems(kazamaMediaItems(queue), startIndex.coerceIn(0, queue.lastIndex), 0L)
+        player.prepare()
+        player.playWhenReady = true
+    }
+    DisposableEffect(player) {
+        val listener = object : Player.Listener {
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                onIndexChange(player.currentMediaItemIndex.coerceIn(0, queue.lastIndex))
+            }
+        }
+        player.addListener(listener)
+        onDispose { player.removeListener(listener) }
+    }
+    AndroidView(
+        factory = { viewContext ->
+            PlayerView(viewContext).apply {
+                this.player = player
+                useController = true
+                setShowPreviousButton(true)
+                setShowNextButton(true)
+                setShowRewindButton(false)
+                setShowFastForwardButton(false)
+                setBackgroundColor(android.graphics.Color.BLACK)
+            }
+        },
+        modifier = modifier,
+    )
+}
+
+private fun kazamaFormatTime(milliseconds: Long): String {
+    val seconds = (milliseconds / 1000).coerceAtLeast(0)
+    return "%d:%02d".format(seconds / 60, seconds % 60)
+}
+
+/** Pemutar musik: sampul, penggeser posisi, putar/jeda, lagu sebelumnya/berikutnya, dan mundur/maju 10 detik. Terpisah dari pemutar video. */
+@Composable
+fun KazamaAudioPlayerDialog(queue: List<ViewerItem>, startIndex: Int, onDismiss: () -> Unit) {
     val context = LocalContext.current
     var playing by remember { mutableStateOf(false) }
     var position by remember { mutableStateOf(0L) }
     var duration by remember { mutableStateOf(0L) }
     var seeking by remember { mutableStateOf(false) }
     var seekFraction by remember { mutableStateOf(0f) }
+    var currentIndex by remember { mutableStateOf(startIndex.coerceIn(0, queue.lastIndex)) }
     var error by remember { mutableStateOf<String?>(null) }
+    val current = queue[currentIndex]
 
     val player = remember {
         ExoPlayer.Builder(context).build().apply {
             addListener(object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) { playing = isPlaying }
+                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                    currentIndex = currentMediaItemIndex.coerceIn(0, queue.lastIndex)
+                    error = null
+                }
                 override fun onPlayerError(e: PlaybackException) {
                     error = "Audio gagal diputar (${e.errorCodeName.removePrefix("ERROR_CODE_").lowercase()})"
                 }
@@ -365,8 +422,8 @@ fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
         }
     }
     DisposableEffect(Unit) { onDispose { player.release() } }
-    LaunchedEffect(item.uri) {
-        player.setMediaSource(mediaSource(context, PlaySpec(HttpSource(item.uri, emptyMap(), null))))
+    LaunchedEffect(queue) {
+        player.setMediaItems(kazamaMediaItems(queue), startIndex.coerceIn(0, queue.lastIndex), 0L)
         player.prepare()
         player.playWhenReady = true
     }
@@ -386,7 +443,8 @@ fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Pemutar musik", Modifier.weight(1f), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+                val heading = if (queue.size > 1) "Pemutar musik · ${currentIndex + 1}/${queue.size}" else "Pemutar musik"
+                Text(heading, Modifier.weight(1f), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
                 androidx.compose.material3.IconButton(onClick = onDismiss) {
                     androidx.compose.material3.Icon(Icons.Filled.Close, "Tutup", tint = Ink)
                 }
@@ -402,7 +460,7 @@ fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
             }
             Spacer(Modifier.height(26.dp))
             Text(
-                item.title, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp,
+                current.title, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp,
                 maxLines = 2, textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             )
             error?.let {
@@ -424,16 +482,23 @@ fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
                 ),
             )
             Row(Modifier.fillMaxWidth()) {
-                Text(fmtTime(if (seeking) (seekFraction * duration).toLong() else position), Modifier.weight(1f), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text(fmtTime(duration), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(kazamaFormatTime(if (seeking) (seekFraction * duration).toLong() else position), Modifier.weight(1f), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(kazamaFormatTime(duration), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(18.dp))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(20.dp), verticalAlignment = Alignment.CenterVertically) {
-                AudioRoundButton(56.dp, NeoCyan, { player.seekTo((player.currentPosition - 10_000).coerceAtLeast(0L)) }) {
-                    androidx.compose.material3.Icon(painterResource(R.drawable.ic_seek_back), "Mundur 10 detik", Modifier.size(28.dp), tint = Ink)
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                // panah dengan garis = lagu sebelumnya/berikutnya; panah melingkar bertanda 10 = mundur/maju 10 detik
+                KazamaRoundButton(48.dp, NeoLime, { player.seekToPreviousMediaItem() }, enabled = queue.size > 1) {
+                    androidx.compose.material3.Icon(painterResource(R.drawable.ic_skip_prev), "Lagu sebelumnya", Modifier.size(24.dp), tint = Ink)
                 }
-                AudioRoundButton(78.dp, NeoYellow, {
+                KazamaRoundButton(52.dp, NeoCyan, { player.seekTo((player.currentPosition - 10_000).coerceAtLeast(0L)) }) {
+                    Box(contentAlignment = Alignment.Center) {
+                        androidx.compose.material3.Icon(painterResource(R.drawable.ic_seek_back), "Mundur 10 detik", Modifier.size(30.dp), tint = Ink)
+                        Text("10", color = Ink, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                }
+                KazamaRoundButton(78.dp, NeoYellow, {
                     when {
                         player.playbackState == Player.STATE_ENDED -> { player.seekTo(0); player.play() }
                         playing -> player.pause()
@@ -445,26 +510,39 @@ fun AudioPlayerDialog(item: ViewerItem, onDismiss: () -> Unit) {
                         if (playing) "Jeda" else "Putar", Modifier.size(40.dp), tint = Ink,
                     )
                 }
-                AudioRoundButton(56.dp, NeoCyan, { player.seekTo(player.currentPosition + 10_000) }) {
-                    androidx.compose.material3.Icon(painterResource(R.drawable.ic_seek_forward), "Maju 10 detik", Modifier.size(28.dp), tint = Ink)
+                KazamaRoundButton(52.dp, NeoCyan, { player.seekTo(player.currentPosition + 10_000) }) {
+                    Box(contentAlignment = Alignment.Center) {
+                        androidx.compose.material3.Icon(painterResource(R.drawable.ic_seek_forward), "Maju 10 detik", Modifier.size(30.dp), tint = Ink)
+                        Text("10", color = Ink, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                }
+                KazamaRoundButton(48.dp, NeoLime, { player.seekToNextMediaItem() }, enabled = queue.size > 1) {
+                    androidx.compose.material3.Icon(painterResource(R.drawable.ic_skip_next), "Lagu berikutnya", Modifier.size(24.dp), tint = Ink)
                 }
             }
             Spacer(Modifier.weight(1f))
             SmallAction("Bagikan", R.drawable.ic_share) {
-                try { context.startActivity(com.kazamatech.dlin.Downloads.shareIntent(android.net.Uri.parse(item.uri), item.mime)) } catch (_: Exception) { }
+                try { context.startActivity(com.kazamatech.dlin.Downloads.shareIntent(android.net.Uri.parse(current.uri), current.mime)) } catch (_: Exception) { }
             }
         }
     }
 }
 
 @Composable
-private fun AudioRoundButton(size: androidx.compose.ui.unit.Dp, color: Color, onClick: () -> Unit, content: @Composable () -> Unit) {
+private fun KazamaRoundButton(
+    size: androidx.compose.ui.unit.Dp,
+    color: Color,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
     androidx.compose.material3.Surface(
         onClick = onClick,
+        enabled = enabled,
         shape = androidx.compose.foundation.shape.CircleShape,
-        color = color,
+        color = if (enabled) color else color.copy(alpha = 0.4f),
         border = androidx.compose.foundation.BorderStroke(NeoBorder, Ink),
-        modifier = Modifier.size(size).neoShadow(4.dp, size / 2),
+        modifier = Modifier.size(size).neoShadow(if (enabled) 4.dp else 0.dp, size / 2),
     ) {
         Box(contentAlignment = Alignment.Center) { content() }
     }
