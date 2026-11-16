@@ -255,7 +255,7 @@ fun OfflineBanner() {
             Icon(painterResource(R.drawable.ic_alert), null, Modifier.size(18.dp), tint = Ink)
             Spacer(Modifier.width(10.dp))
             Text(
-                "Mode offline · hanya Unduhan yang bisa dibuka",
+                "Mode offline · tidak bisa mengunduh",
                 color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp,
             )
         }
