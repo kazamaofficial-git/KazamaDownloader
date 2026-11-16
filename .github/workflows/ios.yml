@@ -30,7 +30,7 @@ jobs:
     name: Build IPA
     runs-on: macos-15
     env:
-      BASE_VERSION: '1.3.0.Hotfix'
+      BASE_VERSION: '1.3.5'
     steps:
       - uses: actions/checkout@v4
 
