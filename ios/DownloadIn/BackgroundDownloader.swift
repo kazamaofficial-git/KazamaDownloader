@@ -28,7 +28,7 @@ final class BackgroundDownloader: NSObject, URLSessionDownloadDelegate {
 
     func download(url: URL, filename: String) async throws -> URL {
         guard Integrity.isOfficial else { throw APIError.server("Aplikasi tiruan terdeteksi.") }
-        try await withCheckedThrowingContinuation { cont in
+        return try await withCheckedThrowingContinuation { cont in
             let task = session.downloadTask(with: url)
             lock.lock()
             continuations[task.taskIdentifier] = cont
