@@ -21,7 +21,8 @@ app.use(helmet({
       'form-action': ["'self'"],
       'frame-ancestors': ["'self'"],
       'object-src': ["'none'"],
-      'img-src': ["'self'", 'data:', 'blob:', new URL(cfg.QRIS_URL).origin],
+      'img-src': ["'self'", 'data:', 'blob:', new URL(cfg.QRIS_URL).origin, 'https://i.ytimg.com'],
+      'frame-src': ['https://www.youtube-nocookie.com'],
       'media-src': ["'self'", 'blob:'],
       'font-src': ["'self'", 'https://fonts.gstatic.com'],
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
@@ -39,6 +40,7 @@ app.use(compression());
 app.locals.app = {
   name: cfg.APP_NAME, full: cfg.APP_FULL_NAME, dev: cfg.DEVELOPER, org: cfg.ORG, version: cfg.VERSION,
   site: cfg.SITE_URL, repo: cfg.REPO_URL, releases: cfg.RELEASES_URL, qris: cfg.QRIS_URL,
+  tutorialUrl: cfg.TUTORIAL_URL, tutorialId: cfg.TUTORIAL_ID,
 };
 
 app.use(express.static(path.join(__dirname, 'public'), {
