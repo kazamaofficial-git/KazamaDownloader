@@ -32,4 +32,4 @@ jobs:
           sleep 3
           curl -fsS http://localhost:3000/ | grep -q "DownloadIn"
           curl -fsS http://localhost:3000/lisensi | grep -q "KazamaTech"
-          curl -fsS http://localhost:3000/api/platforms | grep -q "TikTok"
+          curl -fsS -H "X-KD-Key: DLINAPP-111025" http://localhost:3000/api/platforms | grep -q "TikTok"
