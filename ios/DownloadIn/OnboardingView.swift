@@ -17,7 +17,7 @@ struct OnboardingView: View {
         Page(title: "Tempel atau bagikan", body: "Tempel link dari TikTok, Instagram, YouTube, dan lainnya, lalu pilih kualitas yang kamu mau.", symbol: "globe", fill: Neo.cyan),
         Page(title: "Pilih kualitasnya", body: "Video per resolusi tanpa watermark, MP3, audio asli, foto slide, dan Live Photo. Putar langsung di dalam aplikasi.", symbol: "play.rectangle.fill", fill: Neo.lime),
         Page(title: "Jalan di latar belakang", body: "Unduhan tetap berjalan saat aplikasi ditutup. Kamu diberi tahu saat selesai atau ada versi baru.", symbol: "bolt.fill", fill: Neo.pink),
-        Page(title: "Offline pun aman", body: "Tanpa internet, Unduhan tetap bisa dibuka. Punya file lama? Pulihkan dari app Berkas.", symbol: "tray.fill", fill: Neo.cyan),
+        Page(title: "Offline pun aman", body: "Tanpa internet semua layar tetap bisa dibuka; hanya mengunduh yang dinonaktifkan. Punya file lama? Pulihkan dari app Berkas.", symbol: "tray.fill", fill: Neo.cyan),
         Page(title: "Dibuat oleh KazamaTech", body: "Gratis, tanpa pelacakan, dan terbuka. Siap mengunduh?", symbol: nil, fill: Neo.yellow),
     ]
 
