@@ -9,6 +9,26 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/) dan
 
 ## [Belum dirilis]
 
+## [1.3.5] - 2026-11-14
+
+### Ditambahkan
+- **Sitemap** website: `/sitemap.xml` (beranda, iOS, lisensi, dan video tutorial) dan `/robots.txt` yang menunjuk ke sitemap.
+- **Video tutorial** (YouTube) di website (dimuat saat diklik), halaman Tentang aplikasi Android, dan Pengaturan aplikasi iOS.
+- **Mode terang dan gelap** di website, mengikuti pengaturan sistem dan bisa diganti lewat tombol di header.
+- **Pembaruan wajib** (Android dan iOS): bila ada versi lebih baru, aplikasi dikunci di layar pembaruan sampai diperbarui. Android mengunduh dan memasang APK langsung dari layar itu.
+- **Antrean pemutar** (Android): video dan musik dari daftar Unduhan bisa berpindah ke file sebelumnya/berikutnya.
+- Tombol **Pasang aplikasi** (PWA) di header website untuk Windows, macOS, Linux, dan ChromeOS.
+
+### Diubah
+- **Tampilan website** dirombak: modern futuristik hitam-kuning dengan tata letak baru (hero, video tutorial, platform, aplikasi, donasi, FAQ). Kode CSS/JS ditulis ulang bersih dengan penamaan `kazama-`.
+- **Satu APK untuk Android**: 64-bit (arm64-v8a) dan 32-bit (armeabi-v7a) digabung menjadi satu berkas `DownloadIn-<versi>-universal.apk`, jadi saat mengunduh hanya ada satu pilihan.
+- **Mode Offline**: semua layar kini bisa dibuka; yang dinonaktifkan hanya memproses link dan mengunduh (muncul pita "Mode offline · tidak bisa mengunduh").
+- **iOS hanya tersedia sebagai aplikasi**: halaman iOS di website dipersingkat menjadi unduhan aplikasi (IPA/TIPA/ZIP/Simulator); petunjuk Safari/PWA dan Shortcut dihapus. PWA tetap dipertahankan untuk komputer.
+- **Teks progres unduhan** (Android) yang rapi: persen, ukuran, kecepatan, dan sisa waktu, mis. "Mengunduh 45% · 48 MB · 2,1 MB/dtk · 1 menit lagi"; tahap penggabungan dan konversi ditampilkan dengan kalimat yang jelas.
+
+### Diperbaiki
+- Tombol di pemutar video (Android): tombol panah sebelumnya/berikutnya kini memindah ke video lain (bukan menggeser durasi), tombol putar-cepat bawaan disembunyikan, dan pemutar musik membedakan tombol lagu sebelumnya/berikutnya dari mundur/maju 10 detik.
+
 ## [1.3.0.Hotfix] - 2026-10-16
 
 Perbaikan untuk 1.3.0. Aplikasi menganggap versi ini lebih baru dari 1.3.0, sehingga pembaruan otomatis tetap muncul.
