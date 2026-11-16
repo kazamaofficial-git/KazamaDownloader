@@ -34,7 +34,14 @@ sealed interface HomeState {
 enum class Screen { Main, Update, Licenses }
 
 /** File lokal yang diputar di dalam aplikasi (video/audio/foto). */
-data class ViewerItem(val uri: String, val mime: String?, val title: String)
+data class ViewerItem(
+    val uri: String,
+    val mime: String?,
+    val title: String,
+    /** Antrean putar (video/audio berikutnya & sebelumnya dari daftar Unduhan). */
+    val queue: List<ViewerItem> = emptyList(),
+    val index: Int = 0,
+)
 
 enum class LiveMode(val label: String) { PHOTO("Foto"), VIDEO("Video"), BOTH("Foto + Video") }
 
@@ -52,6 +59,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var tab by mutableStateOf(0)
     var screen by mutableStateOf(Screen.Main)
     var viewer by mutableStateOf<ViewerItem?>(null)
+    var forcedUpdate by mutableStateOf<AppUpdater.Release?>(null)
     var updateMessage by mutableStateOf<String?>(null)
         private set
     var updating by mutableStateOf(false)
@@ -129,7 +137,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         fetch()
     }
 
+    /** Mode Offline: semua layar tetap bisa dibuka, tetapi memproses link dan mengunduh butuh internet. */
+    fun kazamaRequireOnline(): Boolean {
+        if (online.value) return true
+        android.widget.Toast.makeText(ctx, "Mode offline: tidak bisa mengunduh", android.widget.Toast.LENGTH_SHORT).show()
+        return false
+    }
+
+    fun kazamaRetryDownload(id: String) {
+        if (kazamaRequireOnline()) Downloads.retry(ctx, id)
+    }
+
     fun fetch() {
+        if (!kazamaRequireOnline()) return
         val target = extractUrl(url)
         if (target == null) {
             state = HomeState.Error("Tempel link video / postingan yang valid dulu ya (diawali https://)")
@@ -174,6 +194,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun download(info: MediaInfo, kind: String, height: Int = 0, kbps: Int = 192, item: Int = 0, label: String) {
+        if (!kazamaRequireOnline()) return
         val title = if (item > 0) info.entries.firstOrNull { it.index == item }?.title ?: info.title else info.title
         Downloads.enqueue(ctx, info, kind, height, kbps, item, label, title)
     }
@@ -199,6 +220,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Unduh item galeri terpilih (atau hanya [only]). Return jumlah file. */
     fun downloadGallery(info: MediaInfo, only: GalleryItem? = null, onlyPhoto: Boolean? = null): Int {
+        if (!kazamaRequireOnline()) return 0
         val items = if (only != null) listOf(only) else info.gallery.filter { it.index in selected }
         if (items.isEmpty()) return 0
         val base = "DownloadIn-" + safeName(info.title).take(40)
@@ -247,6 +269,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Musik latar foto slide: file asli (langsung) atau MP3 (dikonversi FFmpeg di HP). */
     fun downloadMusic(info: MediaInfo, mp3: Boolean) {
+        if (!kazamaRequireOnline()) return
         val m = info.music ?: return
         val base = safeName(info.title) + " (musik)"
         if (!mp3) {
@@ -291,14 +314,17 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Cek rilis terbaru (maks. tiap 6 jam, hanya saat online). Bila ada versi lebih baru -> popup pembaruan. */
+    /**
+     * Pembaruan wajib: setiap aplikasi dibuka (dan saat internet kembali) rilis terbaru dicek.
+     * Bila ada versi lebih baru, aplikasi dikunci pada layar pembaruan sampai diperbarui.
+     */
     private suspend fun checkUpdateIfDue() {
         if (!online.value) return
-        val due = System.currentTimeMillis() - AppUpdater.lastCheck(ctx) > 6 * 3600_000L
-        if (!due) return
-        val rel = AppUpdater.check(ctx) ?: return
-        if (AppUpdater.compare(rel.version, AppUpdater.currentVersion) > 0 && AppUpdater.dismissed(ctx) != rel.version) {
-            if (popup == null) popup = Popup.Update(rel) else pendingUpdatePopup = rel
+        val release = AppUpdater.check(ctx) ?: return
+        if (AppUpdater.compare(release.version, AppUpdater.currentVersion) > 0) {
+            forcedUpdate = release
+            popup = null
+            pendingUpdatePopup = null
         }
     }
 
@@ -327,11 +353,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { AppUpdater.check(ctx) }
     }
 
+    /** Susun antrean dari file selesai sejenis (video/audio) agar tombol berikutnya/sebelumnya memindah ke file lain. */
+    private fun kazamaBuildViewerItem(uri: String, mime: String?, title: String): ViewerItem {
+        val kind = mime.orEmpty().substringBefore('/')
+        if (kind != "video" && kind != "audio") return ViewerItem(uri, mime, title)
+        val queue = Downloads.records.value
+            .filter { it.status == DlRecord.STATUS_DONE && it.count <= 1 && it.uri != null && it.mime.orEmpty().startsWith("$kind/") }
+            .map { ViewerItem(it.uri!!, it.mime, it.title) }
+        val index = queue.indexOfFirst { it.uri == uri }
+        return if (index < 0) ViewerItem(uri, mime, title) else ViewerItem(uri, mime, title, queue, index)
+    }
+
     /** Buka file hasil unduhan: video/audio/foto diputar di dalam aplikasi, lainnya lewat aplikasi lain. */
     fun openLocal(uri: String, mime: String?, title: String) {
         val m = mime.orEmpty()
         if (m.startsWith("video/") || m.startsWith("audio/") || m.startsWith("image/")) {
-            viewer = ViewerItem(uri, mime, title)
+            viewer = kazamaBuildViewerItem(uri, mime, title)
             return
         }
         try {
