@@ -23,6 +23,8 @@ module.exports = {
   SITE_URL: 'https://dlin.kazamasite.biz.id',
   REPO_URL: 'https://github.com/kazamaofficial-git/KazamaDownloader',
   RELEASES_URL: 'https://github.com/kazamaofficial-git/KazamaDownloader/releases/latest',
+  TUTORIAL_URL: 'https://youtu.be/xxy4yc4D1bk',
+  TUTORIAL_ID: 'xxy4yc4D1bk',
   QRIS_URL: 'https://www.kazamasite.biz.id/images/qris.jpg',
   VERSION: require('../package.json').versionLabel || require('../package.json').version,
   isProd,
