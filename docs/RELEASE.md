@@ -11,7 +11,9 @@
 | `ios.yml` | sama dengan di atas | IPA tanpa tanda tangan; saat tag/`publish`, dilampirkan ke Release yang sama |
 | `ci.yml` | push / PR | tes unit website |
 
-Hasil rilis: `DownloadIn-<versi>-arm64-v8a.apk`, `-armeabi-v7a.apk`, `-x86_64.apk`, serta untuk iOS `DownloadIn-<versi>.ipa` (AltStore/Sideloadly), `.tipa` (TrollStore), `DownloadIn-<versi>-ios.zip` (paket `.app` mentah), dan `DownloadIn-<versi>-simulator.zip` (build **iOS Simulator** untuk emulator iPhone berbasis web seperti Appetize.io; tidak bisa dipasang di iPhone asli). Tombol Unduh APK di website otomatis menunjuk ke rilis terbaru.
+Hasil rilis: **satu APK** `DownloadIn-<versi>-universal.apk` (arm64-v8a 64-bit + armeabi-v7a 32-bit digabung), serta untuk iOS `DownloadIn-<versi>.ipa` (AltStore/Sideloadly), `.tipa` (TrollStore), `DownloadIn-<versi>-ios.zip` (paket `.app` mentah), dan `DownloadIn-<versi>-simulator.zip` (build **iOS Simulator** untuk emulator iPhone berbasis web seperti Appetize.io; tidak bisa dipasang di iPhone asli). Tombol Unduh APK di website otomatis menunjuk ke rilis terbaru.
+
+CI juga membangun APK x86_64 terpisah **hanya untuk smoke test emulator**; berkas itu tidak dirilis (hanya artifact `DownloadIn-<versi>-smoke`).
 
 Pengaturan repo: **Settings → Actions → General → Workflow permissions** harus *Read and write permissions*.
 
