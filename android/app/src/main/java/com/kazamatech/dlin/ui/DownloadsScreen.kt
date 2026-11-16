@@ -187,7 +187,7 @@ fun DownloadsScreen(vm: MainViewModel) {
                             val uri = rec.uri?.let { Uri.parse(it) } ?: return@RecordCard
                             try { context.startActivity(Downloads.shareIntent(uri, rec.mime)) } catch (_: Exception) { }
                         },
-                        onRetry = { Downloads.retry(context, rec.id) },
+                        onRetry = { vm.kazamaRetryDownload(rec.id) },
                         onCancel = { Downloads.cancel(context, rec.id) },
                         onRemove = { Downloads.remove(context, rec.id) },
                     )
