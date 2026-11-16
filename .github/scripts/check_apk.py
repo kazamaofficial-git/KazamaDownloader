@@ -8,20 +8,22 @@ out_dir, jni_dir, ytdlp = sys.argv[1:4]
 failed = False
 ytdlp_size = os.path.getsize(ytdlp) if os.path.exists(ytdlp) else -1
 for apk in sorted(glob.glob(os.path.join(out_dir, '*.apk'))):
-    abi = next(a for a in ('arm64-v8a', 'armeabi-v7a', 'x86_64') if a in apk)
     z = zipfile.ZipFile(apk)
     infos = z.infolist()
     names = {i.filename: i for i in infos}
+    # arsitektur yang benar-benar ada di APK (APK satuan: arm64-v8a + armeabi-v7a)
+    abis = [a for a in ('arm64-v8a', 'armeabi-v7a', 'x86_64') if any(n.startswith(f'lib/{a}/') for n in names)]
     print(f'\n== {os.path.basename(apk)}: {os.path.getsize(apk) / 1e6:.2f} MB')
-    checks = []
-    py = names.get(f'lib/{abi}/libpython.zip.so')
-    slim = os.path.join(jni_dir, abi, 'libpython.zip.so')
-    checks.append(('libpython.zip.so ramping', py is not None and os.path.exists(slim) and py.file_size == os.path.getsize(slim)))
-    ff = names.get(f'lib/{abi}/libffmpeg.so')
-    ff_src = os.path.join(jni_dir, abi, 'libffmpeg.so')
-    checks.append(('libffmpeg.so minimal', ff is not None and os.path.exists(ff_src) and ff.file_size == os.path.getsize(ff_src)))
-    checks.append(('tanpa libffmpeg.zip.so lama', f'lib/{abi}/libffmpeg.zip.so' not in names))
-    checks.append(('libqjs.so (QuickJS)', f'lib/{abi}/libqjs.so' in names))
+    checks = [('minimal satu arsitektur', bool(abis))]
+    for abi in abis:
+        py = names.get(f'lib/{abi}/libpython.zip.so')
+        slim = os.path.join(jni_dir, abi, 'libpython.zip.so')
+        checks.append((f'{abi}: libpython.zip.so ramping', py is not None and os.path.exists(slim) and py.file_size == os.path.getsize(slim)))
+        ff = names.get(f'lib/{abi}/libffmpeg.so')
+        ff_src = os.path.join(jni_dir, abi, 'libffmpeg.so')
+        checks.append((f'{abi}: libffmpeg.so minimal', ff is not None and os.path.exists(ff_src) and ff.file_size == os.path.getsize(ff_src)))
+        checks.append((f'{abi}: tanpa libffmpeg.zip.so lama', f'lib/{abi}/libffmpeg.zip.so' not in names))
+        checks.append((f'{abi}: libqjs.so (QuickJS)', f'lib/{abi}/libqjs.so' in names))
     checks.append(('yt-dlp terbaru dibundel', any(i.file_size == ytdlp_size for i in infos if i.filename.startswith('res/'))))
     checks.append(('skrip daemon', 'assets/py/kdl_daemon.py' in names))
     checks.append(('lisensi', 'assets/licenses/components.json' in names))
