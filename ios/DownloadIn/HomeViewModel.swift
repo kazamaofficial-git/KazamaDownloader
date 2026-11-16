@@ -13,6 +13,9 @@ final class HomeViewModel: ObservableObject {
 
     @Published var link = ""
     private(set) var lastLink: String? = nil
+
+    /// Diisi RootView dari NetworkMonitor. Mode Offline: layar tetap bisa dibuka, tetapi memproses link dan mengunduh dinonaktifkan.
+    var kazamaIsOnline = true
     @Published var phase: Phase = .idle
     @Published var busy: String? = nil
     @Published var toast: String? = nil
@@ -28,6 +31,10 @@ final class HomeViewModel: ObservableObject {
     }
 
     func fetch() async {
+        guard kazamaIsOnline else {
+            showToast("Mode offline: tidak bisa mengunduh")
+            return
+        }
         let text = link.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else {
             showToast("Tempel link dulu ya")
@@ -48,6 +55,10 @@ final class HomeViewModel: ObservableObject {
     }
 
     func save(path: String, filename: String, ext: String, title: String = "", link: String? = nil) async {
+        guard kazamaIsOnline else {
+            showToast("Mode offline: tidak bisa mengunduh")
+            return
+        }
         busy = "Mengunduh… (video gabungan/MP3 diproses server dulu)"
         defer { busy = nil }
         let source = link ?? lastLink
