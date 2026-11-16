@@ -68,13 +68,15 @@ fun KazamaRoot(vm: MainViewModel) {
     LaunchedEffect(showSplash) { if (!showSplash) vm.onStartup() }
     val cs = MaterialTheme.colorScheme
     val online by vm.online.collectAsState()
-    // Mode Offline: hanya tab Unduhan yang bisa dibuka
-    LaunchedEffect(online, vm.tab) { if (!online && vm.tab != 1) vm.tab = 1 }
+    // Pembaruan wajib: aplikasi dikunci sampai versi terbaru terpasang
+    val forcedUpdate = vm.forcedUpdate
+    if (forcedUpdate != null) {
+        KazamaForceUpdateScreen(vm, forcedUpdate)
+        return
+    }
+    // Mode Offline: semua layar tetap bisa dibuka, hanya mengunduh yang dinonaktifkan
     LaunchedEffect(online) {
-        if (!online) {
-            vm.screen = Screen.Main
-            snackbar.showSnackbar("Mode offline: hanya Unduhan yang bisa dibuka")
-        }
+        if (!online) snackbar.showSnackbar("Mode offline: tidak bisa mengunduh")
     }
 
     Box(Modifier.fillMaxSize().background(cs.background)) {
@@ -93,7 +95,7 @@ fun KazamaRoot(vm: MainViewModel) {
                             unselectedTextColor = Ink,
                         )
                         NavigationBarItem(
-                            selected = vm.tab == 0, onClick = { vm.tab = 0 }, colors = colors, enabled = online,
+                            selected = vm.tab == 0, onClick = { vm.tab = 0 }, colors = colors,
                             icon = { Icon(Icons.Outlined.Home, null) }, label = { Text("Beranda") },
                         )
                         NavigationBarItem(
@@ -102,11 +104,11 @@ fun KazamaRoot(vm: MainViewModel) {
                             label = { Text(if (running > 0) "Unduhan ($running)" else "Unduhan") },
                         )
                         NavigationBarItem(
-                            selected = vm.tab == 2, onClick = { vm.tab = 2 }, colors = colors, enabled = online,
+                            selected = vm.tab == 2, onClick = { vm.tab = 2 }, colors = colors,
                             icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Atur") },
                         )
                         NavigationBarItem(
-                            selected = vm.tab == 3, onClick = { vm.tab = 3 }, colors = colors, enabled = online,
+                            selected = vm.tab == 3, onClick = { vm.tab = 3 }, colors = colors,
                             icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("Tentang") },
                         )
                     }
@@ -135,7 +137,7 @@ fun KazamaRoot(vm: MainViewModel) {
             SplashCredit()
         }
         if (!showSplash) {
-            vm.viewer?.let { v -> LocalMediaDialog(v) { vm.viewer = null } }
+            vm.viewer?.let { v -> KazamaMediaViewerDialog(v) { vm.viewer = null } }
             when (val p = vm.popup) {
                 is Popup.WhatsNew -> BannerPopup(p.bannerUrl, onClose = { vm.closePopup() }, onOpen = { vm.openPopup() })
                 is Popup.Update -> BannerPopup(
