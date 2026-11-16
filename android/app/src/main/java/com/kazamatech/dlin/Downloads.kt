@@ -430,12 +430,12 @@ class DownloadWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
         var lastUpdate = 0L
         return try {
             runInterruptible(Dispatchers.IO) {
-                YoutubeDL.getInstance().execute(request, taskId) { progress: Float, _: Long, line: String ->
+                YoutubeDL.getInstance().execute(request, taskId) { progress: Float, eta: Long, line: String ->
                     val now = System.currentTimeMillis()
                     if (now - lastUpdate > 700) {
                         lastUpdate = now
                         val p = (progress / 100f).coerceIn(0f, 1f)
-                        val text = describe(line, p)
+                        val text = KazamaProgressText.describe(line, p, eta)
                         setProgressAsync(workDataOf(Downloads.K_PROGRESS to p, Downloads.K_LINE to text))
                         Downloads.upsert(ctx, taskId) { it.copy(status = DlRecord.STATUS_RUNNING, progress = p, line = text) }
                         try { setForegroundAsync(foreground(title, p, text)) } catch (_: Exception) { }
@@ -505,7 +505,7 @@ class DownloadWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
                                 lastUpdate = now
                                 val frac = if (total > 0) bytes.toFloat() / total else 0f
                                 val p = ((i + frac) / n).coerceIn(0f, 1f)
-                                val text = "File ${i + 1}/$n · ${formatBytes(bytes)}"
+                                val text = KazamaProgressText.filesLine(i + 1, n, bytes, total)
                                 setProgressAsync(workDataOf(Downloads.K_PROGRESS to p, Downloads.K_LINE to text))
                                 Downloads.upsert(ctx, taskId) { it.copy(status = DlRecord.STATUS_RUNNING, progress = p, line = text) }
                                 try { setForegroundAsync(foreground(title, p, text)) } catch (_: Exception) { }
@@ -542,19 +542,6 @@ class DownloadWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
         }
         notifyDone(if (ok > 1) "$title ($ok file)" else title, uri, firstMime)
         return Result.success(workDataOf(Downloads.K_URI to uri.toString(), Downloads.K_MIME to firstMime, Downloads.K_NAME to firstName))
-    }
-
-    private fun describe(line: String, p: Float): String {
-        val l = line.trim()
-        return when {
-            l.startsWith("[download]") && "%" in l -> l.removePrefix("[download]").trim().take(90)
-            l.startsWith("[Merger]") -> "Menggabungkan video + audio…"
-            l.startsWith("[ExtractAudio]") -> "Mengonversi audio…"
-            l.startsWith("[Metadata]") -> "Menulis metadata…"
-            l.startsWith("[KazamaUgoira]") -> "Membuat video dari ugoira…"
-            p > 0f -> "Mengunduh ${(p * 100).toInt()}%"
-            else -> "Memproses…"
-        }
     }
 
     private fun fail(taskId: String, message: String): Result {
