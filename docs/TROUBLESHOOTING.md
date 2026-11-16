@@ -16,4 +16,5 @@
 | Aplikasi Android gagal memperbarui diri ("bentrok") | APK baru harus ditandatangani key yang sama dengan yang terpasang. Isi 4 secrets keystore (lihat [RELEASE.md](RELEASE.md)); bila APK terpasang bertanda tangan lain, copot sekali lalu pasang versi terbaru. Mengganti ID paket juga membuat aplikasi terpasang sebagai aplikasi terpisah, bukan pembaruan |
 | Build iOS: "future Xcode project file format" | pakai runner dengan Xcode 16.3+ (workflow sudah memakai `macos-15`) |
 | Unduhan Android berhenti saat layar mati | di Pengaturan aplikasi, ketuk *Izinkan di latar belakang* (bebas hemat baterai) |
-| Aplikasi dianggap offline padahal Wi-Fi tersambung | aplikasi mengetes akses internet sungguhan; Wi-Fi tanpa internet memang dianggap offline dan otomatis online lagi saat internet hidup |
+| Aplikasi dianggap offline padahal Wi-Fi tersambung | aplikasi mengetes akses internet sungguhan; Wi-Fi tanpa internet memang dianggap offline (semua layar tetap bisa dibuka, hanya mengunduh yang dinonaktifkan) dan otomatis online lagi saat internet hidup |
+| Aplikasi terkunci di layar "Pembaruan wajib" | ada versi lebih baru di GitHub Releases. Ketuk *Perbarui sekarang* (Android) atau unduh versi terbaru (iOS). Bila gagal, gunakan *Unduh dari website* |
