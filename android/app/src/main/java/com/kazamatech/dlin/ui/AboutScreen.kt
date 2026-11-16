@@ -109,6 +109,7 @@ fun AboutScreen(vm: MainViewModel) {
         KazamaCard {
             InfoLine(R.drawable.ic_folder, "Lokasi file", "Internal storage › Download › DownloadIn")
             InfoLine(R.drawable.ic_globe, "Versi web", BuildConfig.WEB_URL) { open(BuildConfig.WEB_URL) }
+            InfoLine(R.drawable.ic_video, "Video tutorial", "Cara memakai DownloadIn (YouTube)") { open(BuildConfig.TUTORIAL_URL) }
             val integrity = remember { com.kazamatech.dlin.Integrity.status(context) }
             when (integrity) {
                 com.kazamatech.dlin.Integrity.Status.OFFICIAL ->
