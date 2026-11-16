@@ -6,10 +6,29 @@ const components = require('../../licenses/components.json');
 const cfg = require('../config');
 const releases = require('../releases');
 
+const { kazamaBuildSitemap, kazamaBuildRobots } = require('../kazamaSitemap');
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
   res.render('index', { title: 'DownloadIn — Download video, MP3 & foto gratis', catalog: catalog(), page: 'home' });
+});
+
+router.get('/sitemap.xml', (req, res) => {
+  const xml = kazamaBuildSitemap({
+    baseUrl: cfg.SITE_URL,
+    lastModified: new Date().toISOString().slice(0, 10),
+    tutorial: {
+      id: cfg.TUTORIAL_ID,
+      title: 'Video tutorial DownloadIn',
+      description: 'Cara mengunduh video, MP3, dan foto dengan DownloadIn.',
+    },
+  });
+  res.type('application/xml').set('Cache-Control', 'public, max-age=3600').send(xml);
+});
+
+router.get('/robots.txt', (req, res) => {
+  res.type('text/plain').set('Cache-Control', 'public, max-age=3600').send(kazamaBuildRobots({ baseUrl: cfg.SITE_URL }));
 });
 
 router.get('/lisensi', (req, res) => {
