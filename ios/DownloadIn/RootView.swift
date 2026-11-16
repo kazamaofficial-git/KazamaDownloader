@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Layar utama: tab Beranda + Unduhan. Saat offline hanya Unduhan yang bisa dibuka.
+/// Layar utama: tab Beranda + Unduhan. Mode Offline: semua layar tetap bisa dibuka, hanya mengunduh yang dinonaktifkan.
+/// Pembaruan wajib: bila ada versi lebih baru, aplikasi dikunci di layar pembaruan.
 struct ContentView: View {
     @StateObject private var vm = HomeViewModel()
     @StateObject private var net = NetworkMonitor()
@@ -8,16 +9,21 @@ struct ContentView: View {
     @ObservedObject private var failed = FailedStore.shared
     @State private var tab = 0
     @State private var update: UpdateInfo? = nil
-    @State private var updateDismissed = false
 
-    private var showHome: Bool { tab == 0 && net.online }
+    private var showHome: Bool { tab == 0 }
 
     var body: some View {
+        if let required = update {
+            KazamaForceUpdateView(info: required)
+        } else {
+            mainContent
+        }
+    }
+
+    private var mainContent: some View {
         VStack(spacing: 0) {
             if !net.online {
-                strip("Mode offline · hanya Unduhan yang bisa dibuka", fill: Neo.pink, icon: "wifi.slash")
-            } else if let u = update, !updateDismissed {
-                updateStrip(u)
+                strip("Mode offline · tidak bisa mengunduh", fill: Neo.pink, icon: "wifi.slash")
             }
 
             ZStack {
@@ -32,14 +38,17 @@ struct ContentView: View {
             tabBar
         }
         .background(Neo.lilac.ignoresSafeArea())
-        .task { await checkUpdate() }
+        .task {
+            vm.kazamaIsOnline = net.online
+            await checkUpdate()
+        }
         .onChange(of: net.online) { online in
-            if online { Task { await checkUpdate() } } else { tab = 1 }
+            vm.kazamaIsOnline = online
+            if online { Task { await checkUpdate() } }
         }
         .onOpenURL { url in // downloadin://?url=https://...
-            guard net.online,
-                  let link = URLComponents(url: url, resolvingAgainstBaseURL: false)?
-                    .queryItems?.first(where: { $0.name == "url" })?.value else { return }
+            guard let link = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name == "url" })?.value else { return }
             tab = 0
             vm.link = link
             Task { await vm.fetch() }
@@ -63,38 +72,11 @@ struct ContentView: View {
         }
     }
 
-    private func updateStrip(_ u: UpdateInfo) -> some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 10) {
-                Text("Versi \(u.version) tersedia")
-                    .font(.system(size: 13, weight: .heavy))
-                    .foregroundColor(Neo.ink)
-                Spacer(minLength: 0)
-                Button("Perbarui") { UIApplication.shared.open(u.url) }
-                    .font(.system(size: 13, weight: .heavy))
-                    .foregroundColor(Neo.ink)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Neo.yellow)
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Neo.ink, lineWidth: 2))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                Button { updateDismissed = true } label: {
-                    Image(systemName: "xmark").font(.system(size: 13, weight: .heavy)).foregroundColor(Neo.ink)
-                }
-                .accessibilityLabel("Tutup")
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(Neo.lime)
-            Rectangle().fill(Neo.ink).frame(height: Neo.border)
-        }
-    }
-
     private var tabBar: some View {
         VStack(spacing: 0) {
             Rectangle().fill(Neo.ink).frame(height: Neo.border)
             HStack(spacing: 0) {
-                tabButton("Beranda", icon: "house.fill", selected: showHome, enabled: net.online) { tab = 0 }
+                tabButton("Beranda", icon: "house.fill", selected: showHome, enabled: true) { tab = 0 }
                 tabButton("Unduhan" + (store.files.count + failed.jobs.count == 0 ? "" : " (\(store.files.count + failed.jobs.count))"),
                           icon: "arrow.down.circle.fill", selected: !showHome, enabled: true) { tab = 1 }
             }
@@ -120,6 +102,5 @@ struct ContentView: View {
     private func checkUpdate() async {
         guard net.online else { return }
         update = await UpdateChecker.latest()
-        updateDismissed = false
     }
 }
