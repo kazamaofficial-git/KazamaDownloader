@@ -22,11 +22,16 @@ val dlJniDir: File = layout.buildDirectory.dir("dl-jni").get().asFile
 // yt-dlp terbaru yang dibundel saat build CI (menimpa res/raw/ytdlp bawaan library)
 val dlResDir: File = layout.buildDirectory.dir("dl-res").get().asFile
 
+// Arsitektur yang dikemas. Bawaan: ARM 64-bit + 32-bit. CI membuat APK x86_64 terpisah hanya untuk smoke test emulator (-PkazamaAbis=x86_64).
+val kazamaAbis: List<String> = (project.findProperty("kazamaAbis") as String?)?.split(",")?.map { it.trim() }
+    ?: listOf("arm64-v8a", "armeabi-v7a")
+
 android {
     namespace = "com.kazamatech.dlin"
     compileSdk = 35
 
     defaultConfig {
+        ndk { abiFilters += kazamaAbis }
         applicationId = "com.kazamatech.dlin"
         minSdk = 24
         targetSdk = 35
@@ -37,6 +42,7 @@ android {
         buildConfigField("String", "WEB_URL", "\"https://dlin.kazamasite.biz.id\"")
         // Sidik jari (SHA-256) sertifikat tanda tangan resmi; diisi otomatis oleh CI dari keystore rilis. Kosong = build pengembangan.
         buildConfigField("String", "OFFICIAL_CERT_SHA256", "\"${System.getenv("OFFICIAL_CERT_SHA256") ?: ""}\"")
+        buildConfigField("String", "TUTORIAL_URL", "\"https://youtu.be/xxy4yc4D1bk\"")
         buildConfigField("String", "DEVELOPER", "\"KazamaDev\"")
         buildConfigField("String", "ORG", "\"KazamaTech\"")
         buildConfigField("String", "QRIS_URL", "\"https://www.kazamasite.biz.id/images/qris.jpg\"")
@@ -68,15 +74,7 @@ android {
         }
     }
 
-    // Satu APK per arsitektur
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("arm64-v8a", "armeabi-v7a", "x86_64")
-            isUniversalApk = false
-        }
-    }
+    // Satu APK untuk semua HP ARM: arm64-v8a (64-bit) + armeabi-v7a (32-bit) digabung (tanpa split per arsitektur)
 
     packaging {
         jniLibs {
