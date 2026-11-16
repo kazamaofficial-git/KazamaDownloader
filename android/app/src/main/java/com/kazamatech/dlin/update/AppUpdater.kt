@@ -137,9 +137,11 @@ object AppUpdater {
             val a = assets!!.optJSONObject(i) ?: continue
             list.add(Asset(a.optString("name"), a.optString("browser_download_url"), a.optLong("size")))
         }
-        val apks = list.filter { it.name.endsWith(".apk", true) }
+        val apks = list.filter { it.name.endsWith(".apk", true) && !it.name.contains("smoke", true) }
+        // rilis lama: satu APK per arsitektur; rilis baru: satu APK satuan (universal)
         val apk = Build.SUPPORTED_ABIS.firstNotNullOfOrNull { abi -> apks.firstOrNull { it.name.endsWith("-$abi.apk") } }
             ?: apks.firstOrNull { it.name.contains("universal", true) }
+            ?: apks.firstOrNull()
         return Release(
             tag = tag,
             version = tag.removePrefix("v"),
