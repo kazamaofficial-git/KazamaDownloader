@@ -23,7 +23,7 @@ DownloadIn adalah downloader media yang tersedia di tiga tempat dengan tampilan 
 |---|---|---|---|
 | Teknologi | Node.js + Express + EJS | Kotlin + Jetpack Compose | SwiftUI |
 | Mesin pengunduh | yt-dlp di server | yt-dlp + FFmpeg di dalam aplikasi | memakai server DownloadIn |
-| Pemasangan | buka di browser / PWA | APK dari website atau GitHub Releases | IPA (sideload) atau PWA |
+| Pemasangan | buka di browser, atau pasang sebagai aplikasi (PWA) di Windows/macOS/Linux | satu APK dari website atau GitHub Releases | IPA (sideload) |
 
 ## Fitur
 
@@ -38,7 +38,9 @@ DownloadIn adalah downloader media yang tersedia di tiga tempat dengan tampilan 
 **Website**
 - Tempel link atau seluruh teks *share*; deteksi platform otomatis; riwayat 20 link terakhir (disimpan di browser).
 - Tombol **Unduh APK** langsung dari website (tanpa membuka GitHub) dan panduan iOS.
-- Bisa dipasang sebagai aplikasi web (PWA).
+- Tampilan modern futuristik hitam-kuning dengan **mode gelap dan terang**.
+- Bisa dipasang sebagai aplikasi di komputer (**PWA**: Windows, macOS, Linux, ChromeOS) lewat tombol *Pasang aplikasi*.
+- **Video tutorial** (YouTube) dan **sitemap.xml** untuk mesin pencari.
 - Keamanan: link unduhan bertanda tangan, anti-SSRF, rate limit, CSP ketat.
 
 **Aplikasi Android**
@@ -51,12 +53,14 @@ DownloadIn adalah downloader media yang tersedia di tiga tempat dengan tampilan 
 - **Tab Unduhan** dengan kategori (Video, Audio, Foto, Gagal), tarik untuk menyegarkan, dan tombol **Coba lagi** untuk unduhan gagal tanpa memproses link dari awal.
 - **Bagikan** video, audio, atau foto dari daftar Unduhan maupun pemutar bawaan.
 - **Notifikasi**: unduhan selesai (ketuk untuk memutar), unduhan gagal, dan pembaruan aplikasi tersedia.
-- **Pembaruan langsung dari aplikasi**: tombol *Perbarui sekarang* mengunduh dan memasang APK baru.
-- **Mode Offline**: tanpa internet, hanya tab Unduhan yang bisa dibuka.
+- **Pembaruan wajib**: bila ada versi baru, aplikasi dikunci di layar pembaruan dengan tombol *Perbarui sekarang* yang mengunduh dan memasang APK baru, sampai pembaruan selesai.
+- **Mode Offline**: tanpa internet semua layar tetap bisa dibuka (Beranda, Unduhan, Pengaturan, Tentang); hanya memproses link dan mengunduh yang dinonaktifkan.
+- **Progres unduhan yang rapi**: persen, ukuran, kecepatan, dan sisa waktu (mis. *Mengunduh 45% · 48 MB · 2,1 MB/dtk · 1 menit lagi*).
+- **Pemutar video dengan antrean**: tombol panah = video sebelumnya/berikutnya dari daftar Unduhan.
 - **Pulihkan**: setelah pasang ulang, tombol Pulihkan di tab Unduhan membaca kembali file di `Download/DownloadIn`.
 
 **Aplikasi iOS**
-- Layar sambutan, pemutar bawaan (pemutar musik tersendiri untuk audio, dengan tombol Bagikan), unduhan latar belakang (URLSession background), notifikasi lokal, dan Mode Offline.
+- Layar sambutan, pemutar bawaan (pemutar musik tersendiri untuk audio, dengan tombol Bagikan), unduhan latar belakang (URLSession background), notifikasi lokal, pembaruan wajib, dan Mode Offline (semua layar bisa dibuka, tidak bisa mengunduh).
 - Tab Unduhan dengan kategori, daftar Gagal + Coba lagi, dan tarik untuk menyegarkan.
 - Tab Unduhan menyimpan salinan di app Berkas > DownloadIn; tombol Pulihkan mengimpor file dari Berkas.
 - Pengaturan alamat server (untuk yang menjalankan server sendiri).
@@ -87,10 +91,10 @@ DownloadIn adalah downloader media yang tersedia di tiga tempat dengan tampilan 
 
 | | |
 |---|---|
-| Android | 7.0 (API 24) ke atas. Varian APK: `arm64-v8a` (HP modern), `armeabi-v7a` (32-bit), `x86_64` (emulator) |
-| iOS | iOS 16 ke atas. Berkas tanpa tanda tangan: `.ipa` (AltStore/Sideloadly), `.tipa` (TrollStore), `.zip` (paket `.app`), dan `simulator.zip` (untuk emulator iPhone berbasis web); Apple ID gratis berlaku 7 hari |
+| Android | 7.0 (API 24) ke atas. **Satu APK** untuk semua HP ARM: 64-bit (`arm64-v8a`) dan 32-bit (`armeabi-v7a`) digabung |
+| iOS | iOS 16 ke atas. Hanya tersedia sebagai aplikasi (tanpa Safari/PWA). Berkas tanpa tanda tangan: `.ipa` (AltStore/Sideloadly), `.tipa` (TrollStore), `.zip` (paket `.app`), dan `simulator.zip` (untuk emulator iPhone berbasis web); Apple ID gratis berlaku 7 hari |
 | Unduh APK | tombol **Unduh APK** di website, atau [GitHub Releases](https://github.com/kazamaofficial-git/KazamaDownloader/releases/latest) |
-| Ukuran | APK Android besar karena membawa yt-dlp, Python, dan FFmpeg. IPA iOS kecil karena aplikasi hanya klien yang memakai server (bukan PWA, melainkan aplikasi SwiftUI asli) |
+| Ukuran | APK Android besar karena membawa yt-dlp, Python, dan FFmpeg. IPA iOS kecil karena aplikasi hanya klien yang memakai server (aplikasi SwiftUI asli) |
 | Versi | lihat [CHANGELOG](CHANGELOG.md) |
 
 ## Privasi & keamanan
